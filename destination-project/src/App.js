@@ -1,9 +1,11 @@
-import './App.css';
-
+import React from 'react';
+import {Route} from 'react-router-dom';
+import Main from './pages/Main';
 function App() {
   return (
-    <div>안녕하세요</div>
-    
+    <div>
+      <Route path="/" component={Main} exact/>
+    </div>
   );
 }
 
