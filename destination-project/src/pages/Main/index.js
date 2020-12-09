@@ -2,12 +2,14 @@
 import React from 'react';
 import AriaSelectBox from '../../components/AriaSelectBox';
 import Map from '../../containers/Main/Map';
+import Footer from '../../containers/Footer'
 const Main = () => {
 
   return (
     <>
       <AriaSelectBox/>
       <Map/>
+      <Footer/>
     </>
 
   )
