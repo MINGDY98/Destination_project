@@ -2,7 +2,7 @@ import React from 'react';
 import footer from '../../assets/images/sand.jpg'
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-
+/*
 const useStyles = makeStyles({
   root:{
     position:'relative',
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     
   }
 });
-
+*/
 const Footer = () => {
   //const classes = useStyles();
 
