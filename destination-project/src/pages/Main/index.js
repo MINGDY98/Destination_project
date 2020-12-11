@@ -9,7 +9,7 @@ const Main = () => {
     <>
       <AriaSelectBox/>
       <Map/>
-      <div style={{minHeight: '50vh'}} />
+      <div style={{minHeight: '80vh'}} />
       <div style={{display:'block'}}>
         <Footer/>
       </div>
