@@ -1,78 +1,11 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { makeStyles } from '@material-ui/core/styles';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-
-// ISO 3166-1 alpha-2
-// ⚠️ No support for IE 11
-/*
-function countryToFlag(isoCode) {
-  return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode;
-}
-*/
-const useStyles = makeStyles({
-  option: {
-    fontSize: 15,
-    '& > span': {
-      marginRight: 10,
-      fontSize: 18,
-    },
-  },
-  root:{
-    display: 'flex',
-    width:'100%',
-    alignItems:'center',
-    justifyContent:'center',
-    paddingTop:24,
-    paddingBottom: 24,
-  }
-});
-
+import PrimarySelectBox from '../ui/PrimarySelectBox'
 export default function AriaSelectBox() {
-  const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-    <Autocomplete
-      id="country-select-demo"
-      style={{ width: 800 }}
-      options={countries}
-      classes={{
-        option: classes.option,
-      }}
-      autoHighlight
-      getOptionLabel={(option) => option.label}
-      renderOption={(option) => (
-        /**         <React.Fragment>
-          <span>{countryToFlag(option.code)}</span>
-          {option.label} ({option.code}) +{option.phone}
-        </React.Fragment>*/
-        <React.Fragment>
-          <LocationOnIcon/>
-          {option.label}
-        </React.Fragment>
-        
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="지역을 선택하세요."
-          variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
-        />
-      )}
-    />
-    </div>
-  );
+    <PrimarySelectBox data={countries} label="지역을 선택하시요"/>
+  )
 }
 
 // From https://bitbucket.org/atlassian/atlaskit-mk-2/raw/4ad0e56649c3e6c973e226b7efaeb28cb240ccb0/packages/core/select/src/data/countries.js
