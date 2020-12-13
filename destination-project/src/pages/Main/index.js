@@ -13,11 +13,6 @@ const Main = () => {
   return (
     <>
       <AriaSelectBox/>
-      <TextTitle title ={'안녕하세요'} />
-      <PrimaryButton name={'기본'} onClick={null}/>
-      <PrimaryPaper />
-      <TextDivider/>
-      <PrimaryCard/>
       <Map/>
       <div style={{minHeight: '80vh'}} />
       <div style={{display:'block'}}>
