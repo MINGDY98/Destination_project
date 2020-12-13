@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { VectorMap } from '@south-paw/react-vector-maps';
-import KoreaMap from '../../assets/data/koreaMap.json'
+import KoreaMap from '../assets/data/koreaMap.json'
 const MapStyle =  styled.div`
     margin: 1rem auto;
-    width: 300px;
+    minWidth: 300px;
+    width:'100%';
 
     svg {
       stroke: #fff;
@@ -55,7 +56,7 @@ const Map =() =>{
 
   return(
     <MapStyle>
-      <VectorMap  {...KoreaMap} layerProps={layerProps} checkedLayers={['nz-auk']} currentLayers={['nz-wgn']} />
+      <VectorMap {...KoreaMap} layerProps={layerProps} checkedLayers={['nz-auk']} currentLayers={['nz-wgn']} />
       <hr />
       <p>Hovered: {hovered && <code>{hovered}</code>}</p>
       <p>Clicked: {clicked && <code>{clicked}</code>}</p>
@@ -64,5 +65,3 @@ const Map =() =>{
 
 }
 export default Map;
-
-  

@@ -7,7 +7,10 @@ import PrimaryCardContent from './PrimaryCardContent';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    width: 360,
+    height:240,
+    minWidth: 240,
+    minHeight:160
   },
 });
 
