@@ -1,112 +1,68 @@
-import React , { useRef, useEffect, useState }from 'react';
-import * as d3 from "d3";
-import korea from '../../assets/data/korea.json'
+import React from 'react';
+import styled from 'styled-components';
+import { VectorMap } from '@south-paw/react-vector-maps';
+import KoreaMap from '../../assets/data/koreaMap.json'
+const MapStyle =  styled.div`
+    margin: 1rem auto;
+    width: 300px;
 
-const Map = () => {
-  console.log(d3);
-  const svgRef = useRef();
-  const [data,setData] = useState([25, 30,45,60,20]);
+    svg {
+      stroke: #fff;
 
-  const drawKorea = (target) => {
+      // All layers are just path elements
+      path {
+        fill: #a82b2b;
+        cursor: pointer;
+        outline: none;
 
-    var width = 700; //지도의 넓이
-    var height = 700; //지도의 높이
-    var initialScale = 5500; //확대시킬 값
-    var initialX = -11900; //초기 위치값 X
-    var initialY = 4050; //초기 위치값 Y
-    var labels;
+        // When a layer is hovered
+        &:hover {
+          fill: rgba(168,43,43,0.83);
+        }
 
-    var projection = d3.geo
-        .mercator()
-        .scale(initialScale)
-        .translate([initialX, initialY]);
-    var path = d3.geo.path().projection(projection);
-    var zoom = d3.behavior
-        .zoom()
-        .translate(projection.translate())
-        .scale(projection.scale())
-        .scaleExtent([height, 800 * height])
-        .on('zoom', zoom);
-    var svg = d3
-        .select(target)
-        .append('svg')
-        .attr('width', width + 'px')
-        .attr('height', height + 'px')
-        .attr('id', 'map')
-        .attr('class', 'map');
-    
-    var states = svg
-        .append('g')
-        .attr('id', 'states')
-        .call(zoom);
+        // When a layer is focused.
+        &:focus {
+          fill: rgba(168,43,43,0.6);
+        }
 
-    states
-        .append('rect')
-        .attr('class', 'background')
-        .attr('width', width + 'px')
-        .attr('height', height + 'px');
+        // When a layer is 'checked' (via checkedLayers prop).
+        &[aria-checked='true'] {
+          fill: rgba(56,43,168,1);
+        }
 
-    d3.json(korea, function(json) {
-      states
-        .selectAll('path') //지역 설정
-        .data(json.features)
-        .enter()
-        .append('path')
-        .attr('d', path)
-        .attr('id', function(d) {
-          return 'path-' + d.properties.name_eng;
-        });
-    
-      labels = states
-        .selectAll('text')
-        .data(json.features) //라벨표시
-        .enter()
-        .append('text')
-        .attr('transform', translateTolabel)
-        .attr('id', function(d) {
-          return 'label-' + d.properties.name_eng;
-        })
-        .attr('text-anchor', 'middle')
-        .attr('dy', '.35em')
-        .text(function(d) {
-          return d.properties.name;
-        });
-    });
+        // When a layer is 'selected' (via currentLayers prop).
+        &[aria-current='true'] {
+          fill: rgba(56,43,168,0.83);
+        }
 
-        //텍스트 위치 조절 - 하드코딩으로 위치 조절을 했습니다.
-        function translateTolabel(d) {
-          var arr = path.centroid(d);
-          if (d.properties.code == 31) {
-              //서울 경기도 이름 겹쳐서 경기도 내리기
-              arr[1] +=
-                  d3.event && d3.event.scale
-                      ? d3.event.scale / height + 20
-                      : initialScale / height + 20;
-          } else if (d.properties.code == 34) {
-              //충남은 조금 더 내리기
-              arr[1] +=
-                  d3.event && d3.event.scale
-                      ? d3.event.scale / height + 10
-                      : initialScale / height + 10;
-          }
-          return 'translate(' + arr + ')';
+        // You can also highlight a specific layer via it's id
+        &[id="nz-can"] {
+          fill: rgba(56,43,168,0.6);
+        }
       }
-    
-      function zoom() {
-          projection.translate(d3.event.translate).scale(d3.event.scale);
-          states.selectAll('path').attr('d', path);
-          labels.attr('transform', translateTolabel);
-      }
-  }
-  useEffect(()=>{
-    drawKorea();
-  },[])
+    }`;
 
-  return (
-    <React.Fragment>
-      <svg ref={svgRef}>
-        <path/>
-      </svg>
-    </React.Fragment>
+const Map =() =>{
+
+  const [hovered, setHovered] = React.useState('None');
+  const [clicked, setClicked] = React.useState('None');
+
+  const layerProps = {
+    onMouseEnter: ({ target }) => setHovered(target.attributes.name.value),
+    onMouseLeave: ({ target }) => setHovered('None'),
+    onClick: ({ target }) => setClicked(target.attributes.name.value),
+  };
+
+  return(
+    <MapStyle>
+      <VectorMap  {...KoreaMap} layerProps={layerProps} checkedLayers={['nz-auk']} currentLayers={['nz-wgn']} />
+      <hr />
+      <p>Hovered: {hovered && <code>{hovered}</code>}</p>
+      <p>Clicked: {clicked && <code>{clicked}</code>}</p>
+    </MapStyle>
   )
+
 }
+export default Map;
+
+  

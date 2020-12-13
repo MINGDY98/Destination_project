@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
 import AriaSelectBox from '../../components/AriaSelectBox';
-//import Map from '../../containers/Main/Map';
+import Map from '../../containers/Main/Map';
 import Footer from '../../containers/Footer'
 import TextTitle from '../../ui/TextTitle'
 import PrimaryButton from '../../ui/PrimaryButton'
@@ -18,6 +18,7 @@ const Main = () => {
       <PrimaryPaper />
       <TextDivider/>
       <PrimaryCard/>
+      <Map/>
       <div style={{minHeight: '80vh'}} />
       <div style={{display:'block'}}>
         <Footer/>
