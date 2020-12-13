@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { VectorMap } from '@south-paw/react-vector-maps';
-import KoreaMap from '../../assets/data/koreaMap.json'
+import KoreaMap from '../assets/data/koreaMap.json'
 const MapStyle =  styled.div`
     margin: 1rem auto;
     minWidth: 300px;
@@ -65,5 +65,3 @@ const Map =() =>{
 
 }
 export default Map;
-
-  
