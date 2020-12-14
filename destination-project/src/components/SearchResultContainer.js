@@ -155,7 +155,7 @@ const MapContainer = ({ searchPlace }) => {
             height: '500px'
         }}></div>*/}
 
-        <div id='menu_wrap'style={{position:'absolute' ,top:0 }}></div>
+        <div id='menu_wrap'style={{position:'absolute' ,top:10 }}></div>
         <div id='placesList'style={{position:'absolute' ,top:0 }}></div>
         <div id='pagination'style={{position:'absolute' ,bottom:0 }}></div>
         
