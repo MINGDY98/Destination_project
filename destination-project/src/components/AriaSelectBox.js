@@ -5,21 +5,22 @@ import SearchResultContainer from './SearchResultContainer'
 
 export default function AriaSelectBox() {
   const [inputText, setInputText] = useState("");
-  const [place, setPlace] = useState("");
+  //const [place, setPlace] = useState("");
 
   const onChange = (e) => {
+    e.preventDefault();
     setInputText(e.target.value);
   };
-
+/*
   const handleSubmit = (e) => {
     e.preventDefault();
     setPlace(inputText);
     setInputText("");
   };
-
+*/
   return (
     <>
-      <form className="inputForm" onSubmit={handleSubmit}>
+      <form className="inputForm" onSubmit={onChange}>
         <input
           placeholder="Search Place..."
           onChange={onChange}
@@ -27,7 +28,7 @@ export default function AriaSelectBox() {
         />
         <button type="submit">검색</button>
       </form>
-      <SearchResultContainer searchPlace={place} />
+      <SearchResultContainer searchPlace={inputText} />
     </>
   );
 }
