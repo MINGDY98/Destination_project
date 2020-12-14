@@ -1,7 +1,7 @@
 import React from 'react';
 import Map from '../../components/Map'
-import PrimaryCard from '../../ui/PrimaryCard'
-import MobileCard from '../../ui/MobileCard'
+import PrimaryImageButton from '../../ui/PrimaryImageButton'
+import MobileImageButton from '../../ui/MobileImageButton'
 import { Container } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -16,13 +16,13 @@ const MapContainer =() =>{
             <Map/>
           </Grid>
           <div style={{position:'absolute' ,top:-30}}>
-            <MobileCard/>
+            <MobileImageButton/>
           </div>
           <div style={{position:'absolute' ,top:150, right:-30}}>
-            <MobileCard/>
+            <MobileImageButton/>
           </div>
           <div style={{position:'absolute' ,bottom:150, right:40}}>
-            <MobileCard/>
+            <MobileImageButton/>
           </div>
         </Grid>
       </Container>
@@ -38,13 +38,13 @@ const MapContainer =() =>{
           <Grid item md={3} xs={12}>
           </Grid>
           <div style={{position:'absolute' ,top:100}}>
-            <PrimaryCard/>
+            <PrimaryImageButton/>
           </div>
-          <div style={{position:'absolute' ,top:240, right:100}}>
-            <PrimaryCard/>
+          <div style={{position:'absolute' ,top:240, right:70}}>
+            <PrimaryImageButton/>
           </div>
           <div style={{position:'absolute' ,bottom:90, right:270}}>
-            <PrimaryCard/>
+            <PrimaryImageButton/>
           </div>
         </Grid>
       </Container>
