@@ -43,10 +43,9 @@ const MapStyle =  styled.div`
       }
     }`;
 
-const Map =() =>{
+const Map =({hovered, setHovered, clicked, setClicked}) =>{
 
-  const [hovered, setHovered] = React.useState('None');
-  const [clicked, setClicked] = React.useState('None');
+
 
   const layerProps = {
     onMouseEnter: ({ target }) => setHovered(target.attributes.name.value),

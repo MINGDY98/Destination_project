@@ -5,8 +5,8 @@ import dummy from '../assets/images/sand.jpg'
 import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles({
   root: {
-    width: 360,
-    height:240,
+    width: 270,
+    height:180,
     overflow: 'hidden',
     margin:0,
     padding:0,
@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PrimaryImageCard({place}) {
+export default function TabletImageCard({place}) {
   const classes = useStyles();
 
   return (
@@ -25,7 +25,7 @@ export default function PrimaryImageCard({place}) {
         {/** <img src='https://shop-phinf.pstatic.net/20200901_230/1598952274480kaVWW_PNG/88163131471408_1595919199.PNG?type=f296_385' alt="good"/>*/}
         <img src={dummy} alt="dum"/>
       </Button>
-      <Typography variant="h4" style={{position:'absolute', bottom:0, right:0}}>
+      <Typography variant="h6" style={{position:'absolute', bottom:0, right:0}}>
         {place}
       </Typography>
     </div>
