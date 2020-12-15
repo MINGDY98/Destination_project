@@ -1,11 +1,14 @@
 import React from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Main from './pages/Main';
+import TravelRoute from './pages/Main/TravelRoute'
 function App() {
   return (
-    <div>
-      <Route path="/" component={Main} exact/>
-    </div>
+    <Switch>
+      <Route exact path="/" component={Main}/>
+      <Route path="/routes/:place" component={TravelRoute} />
+      <Route path="/routes" component={TravelRoute} />
+    </Switch>
   );
 }
 

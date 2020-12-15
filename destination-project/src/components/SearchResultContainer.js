@@ -2,10 +2,11 @@
 
 import { CardActionArea, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const { kakao } = window;
 
-const MapContainer = ({ searchPlace, onClick }) => {
+const MapContainer = ({ searchPlace }) => {
   const [data,  setData] = React.useState([]);
   const [pagination, setPagenation] = React.useState(null);
   useEffect(() => {
@@ -37,12 +38,16 @@ const MapContainer = ({ searchPlace, onClick }) => {
     <div>
       {data.map((item, idx) => {
         return(
+          <Link to={`/routes/${item.place_name}`}  style={{ color: '#000000',textDecoration: 'none' }}>
           <div key={idx}>
-            <CardActionArea style={{padding: 9, borderBottom: '1px solid #eee'}} onClick={() => onClick(item)}>
-              <Typography>{item.place_name}</Typography>
-              <Typography color="textSecondary" variant="body2">{item.road_address_name}</Typography>
-            </CardActionArea>
+            
+              <CardActionArea style={{padding: 9, borderBottom: '1px solid #eee'}}>
+                <Typography>{item.place_name}</Typography>
+                <Typography color="textSecondary" variant="body2">{item.road_address_name}</Typography>
+              </CardActionArea>
+            
           </div>
+          </Link>
         )
       })}
     </div>

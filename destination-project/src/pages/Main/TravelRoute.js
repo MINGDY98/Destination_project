@@ -1,16 +1,16 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
 import AriaSelectBox from '../../components/AriaSelectBox';
-import MapContainer from '../../containers/Main/MapContainer';
 import Footer from '../../containers/Footer'
 
-const Main = () => {
+const TravelRoute = ({match}) => {
 
+  const {place} = match.params
   return (
     <>
       <AriaSelectBox/> 
       <div style={{minHeight: '30vh'}} />
-      <MapContainer/>
+      {place}
       <div style={{minHeight: '80vh'}} />
       <div style={{display:'block'}}>
         <Footer/>
@@ -20,4 +20,4 @@ const Main = () => {
 
   )
 }
-export default Main;
+export default TravelRoute;

@@ -69,15 +69,6 @@ export default function AriaSelectBox() {
     setInputText(e.target.value);
   };
 
-  const handleClickItem = ( item ) => {
-    console.log(item);
-    alert(item.place_name);
-    /**
-     * 
-     * 주소 검색한 뒤에 아이템 선택 이벤트!
-     * 
-     */
-  }
 
   return (
     <div className={classes.root}>
@@ -104,7 +95,7 @@ export default function AriaSelectBox() {
           }
         </div>
         <div style={{maxHeight: 300, overflow:'auto', }}>
-          <SearchResultContainer searchPlace={inputText} onClick={handleClickItem} />
+          <SearchResultContainer searchPlace={inputText} />
         </div>
       </Paper>
       
