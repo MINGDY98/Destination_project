@@ -1,8 +1,6 @@
 import React from 'react';
 import Map from '../../components/Map'
-import PrimaryImageButton from '../../ui/PrimaryImageButton'
-import MobileImageButton from '../../ui/MobileImageButton'
-import TabletImageButton from '../../ui/TabletImageButton'
+import SlickCarousel from '../../ui/SlickCarousel'
 import { Container } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -11,31 +9,12 @@ const PlaceName = ({hovered, clicked}) => {
   return(
     <div>
       {hovered==='None'&&clicked!=='None'? 
-      <PrimaryImageButton place={clicked}/>
-      : <PrimaryImageButton place={hovered}/>}
+      <SlickCarousel place={clicked}/>
+      : <SlickCarousel place={hovered}/>}
     </div>
   )
 }
 
-const TabletPlaceName = ({hovered, clicked}) => {
-  return(
-    <div>
-      {hovered==='None'&&clicked!=='None'? 
-      <TabletImageButton place={clicked}/>
-      : <TabletImageButton place={hovered}/>}
-    </div>
-  )
-}
-
-const MobilePlaceName = ({hovered, clicked}) => {
-  return(
-    <div>
-      {hovered==='None'&&clicked!=='None'? 
-      <MobileImageButton place={clicked}/>
-      : <MobileImageButton place={hovered}/>}
-    </div>
-  )
-}
 
 
 const MapContainer =() =>{
@@ -51,18 +30,13 @@ const [clicked, setClicked] = React.useState('None');
           <Grid item xs={12}>
             <Map hovered={hovered} setHovered={setHovered} clicked={clicked} setClicked={setClicked} />
           </Grid>
+          
           {hovered !== 'None'||clicked!== 'None' ?          
-          <div>
+          
             <div style={{position:'absolute' ,top:100}}>
-              <MobilePlaceName hovered={hovered} clicked={clicked}/>
+              <PlaceName hovered={hovered} clicked={clicked}/>
             </div>
-            <div style={{position:'absolute' ,top:240, right:70}}>
-              <MobilePlaceName hovered={hovered} clicked={clicked}/>
-            </div>
-            <div style={{position:'absolute' ,bottom:90, right:270}}>
-              <MobilePlaceName hovered={hovered} clicked={clicked}/>
-            </div>
-          </div> : <></> }
+           : <></>}
         </Grid>
       </Container>
     </Box>
@@ -76,18 +50,13 @@ const [clicked, setClicked] = React.useState('None');
           </Grid>
           <Grid item md={3} xs={12}>
           </Grid>
+          
           {hovered !== 'None'||clicked!== 'None' ?          
-          <div>
+          
             <div style={{position:'absolute' ,top:100}}>
-              <TabletPlaceName hovered={hovered} clicked={clicked}/>
+              <PlaceName hovered={hovered} clicked={clicked}/>
             </div>
-            <div style={{position:'absolute' ,top:240, right:70}}>
-              <TabletPlaceName hovered={hovered} clicked={clicked}/>
-            </div>
-            <div style={{position:'absolute' ,bottom:90, right:270}}>
-              <TabletPlaceName hovered={hovered} clicked={clicked}/>
-            </div>
-          </div> : <></> }
+           : <></> }
 
         </Grid>
       </Container>
@@ -102,18 +71,13 @@ const [clicked, setClicked] = React.useState('None');
           </Grid>
           <Grid item md={3} xs={12}>
           </Grid>
+          
           {hovered !== 'None'||clicked!== 'None' ?          
-          <div>
+          
             <div style={{position:'absolute' ,top:100}}>
               <PlaceName hovered={hovered} clicked={clicked}/>
             </div>
-            <div style={{position:'absolute' ,top:240, right:70}}>
-              <PlaceName hovered={hovered} clicked={clicked}/>
-            </div>
-            <div style={{position:'absolute' ,bottom:90, right:270}}>
-              <PlaceName hovered={hovered} clicked={clicked}/>
-            </div>
-          </div> : <></> }
+           : <></> }
 
         </Grid>
       </Container>
