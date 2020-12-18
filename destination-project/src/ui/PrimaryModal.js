@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import SlickCarousel from './SlickCarousel';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,13 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimaryModal({ place, height, width, open, onClose }) {
+export default function PrimaryModal({ place, open, onClose }) {
   const classes = useStyles();
-/*
-  const handleOpen = () => {
-    setOpen(true);
-  };
-*/
   if(place===null){
     return(
       <></>
@@ -48,7 +41,3 @@ export default function PrimaryModal({ place, height, width, open, onClose }) {
   );
   }
 }
-
-      {/**      <button type="button" onClick={handleOpen}>
-        react-transition-group
-      </button> */}

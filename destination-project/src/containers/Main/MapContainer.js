@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const PlaceName = ({ clicked, width, height}) => {
+const PlaceName = ({ clicked, width}) => {
   if(!clicked){
     return(
       <div style={{width:'100%', display:'flex', flexDirection:'column', height:'100%', justifyContent:'center', textAlign:'center'}}>
@@ -31,15 +31,6 @@ const PlaceName = ({ clicked, width, height}) => {
     )
   }
 }
-/** const MobilePlaceName = ({ clicked, width, height}) => {
-  return(
-    <div>
-      {clicked!=='None'? 
-      <PrimaryModal place={clicked} height={height} width={width} />
-      : <></>}
-    </div>
-  )
-}*/
 
 const MapContainer =() =>{
   const classes = useStyles();
@@ -73,62 +64,9 @@ const MapContainer =() =>{
         </div>
       </div>
       <Hidden smUp>
-        <PrimaryModal width={contentsWidth} place={clicked} open={open} onClose={()=>closeModal()} />
+        <PrimaryModal place={clicked} open={open} onClose={()=>closeModal()} />
       </Hidden>
     </Container>
   )
 }
 export default MapContainer;
-
-  /**
-   * 
-   * 
-   * <>
-    <Box display={{xs: 'block', md:'none',lg:'none'}}>
-      <Container>
-        <Grid container style={{display:'flex',position:'relative'}}>
-          <Grid item xs={12}>
-            <Map clicked={clicked} setClicked={setClicked} />
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-    <Box display={{xs: 'none', md:'block', lg:'none'}}>
-      <Container>
-        <Grid container style={{display:'flex',position:'relative'}}>
-          <Grid item md={6} xs={12}>
-            <Map clicked={clicked} setClicked={setClicked} />
-          </Grid>
-          <Grid item md={1} xs={12}></Grid>
-          <Grid item md={5} xs={12}>
-          {clicked!== 'None' ?          
-          
-          <div >
-            <PlaceName clicked={clicked} width={400} height={350}/>
-          </div>
-         : <></> }
-          </Grid>
-
-        </Grid>
-      </Container>
-    </Box>
-    <Box display={{xs: 'none', md:'none',lg:'block'}}>
-      <Container>
-        <Grid container style={{display:'flex'}}>
-          <Grid item md={6} xs={12}>
-            <Map clicked={clicked} setClicked={setClicked} />
-          </Grid>
-          <Grid item md={1} xs={12}></Grid>
-          <Grid item md={5} xs={12}>
-          {clicked !== 'None' ?          
-          
-          <div >
-            <PlaceName clicked={clicked} width={600} height={500}/>
-          </div>
-         : <></> }
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-    </>
-   */

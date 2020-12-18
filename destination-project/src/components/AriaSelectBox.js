@@ -1,6 +1,4 @@
-/* eslint-disable no-use-before-define */
 import React ,{useState} from 'react';
-//import PrimarySelectBox from '../ui/PrimarySelectBox'
 import SearchResultContainer from './SearchResultContainer'
 import { fade, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
@@ -15,19 +13,9 @@ const useStyles = makeStyles(theme=>({
       marginRight: 10,
       fontSize: 18,
     },
-
   },
   inputRoot: {
     color: "purple",
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#b0c4de"
-    },
-    "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#add8e6"
-    },
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#48d1cc"
-    }
   },
   search: {
     position: 'relative',
