@@ -43,22 +43,20 @@ const MapStyle =  styled.div`
       }
     }`;
 
-const Map =({hovered, setHovered, clicked, setClicked}) =>{
+const Map =({clicked, setClicked}) =>{
 
 
 
   const layerProps = {
-    onMouseEnter: ({ target }) => setHovered(target.attributes.name.value),
-    onMouseLeave: ({ target }) => setHovered('None'),
+    //onMouseEnter: ({ target }) => setHovered(target.attributes.name.value),
+    //onMouseLeave: ({ target }) => setHovered('None'),
     onClick: ({ target }) => setClicked(target.attributes.name.value),
   };
 
   return(
     <MapStyle>
       <VectorMap {...KoreaMap} layerProps={layerProps} checkedLayers={['nz-auk']} currentLayers={['nz-wgn']} />
-      <hr />
-      <p>Hovered: {hovered && <code>{hovered}</code>}</p>
-      <p>Clicked: {clicked && <code>{clicked}</code>}</p>
+
     </MapStyle>
   )
 

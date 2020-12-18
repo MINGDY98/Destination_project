@@ -9,6 +9,7 @@ const Main = () => {
   return (
     <>
       <AriaSelectBox/> 
+
       <div style={{minHeight: '30vh'}} />
       <MapContainer/>
       <div style={{minHeight: '80vh'}} />
