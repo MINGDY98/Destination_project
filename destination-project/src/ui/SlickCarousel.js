@@ -82,7 +82,9 @@ export default function SlickCarousel ({place, height, width}){
   
   if(currentData === null){
     return(
-      <div>선택된 지역이 없습니다.</div>
+      //선택된지역이없습니다 해야하는데.. 페이퍼도없어야함그걺
+      <div>선택된지역이없습니다.</div>
+      
     )
   }else{
     return (

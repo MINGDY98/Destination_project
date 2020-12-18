@@ -3,8 +3,6 @@ import Map from '../../components/Map'
 import SlickCarousel from '../../ui/SlickCarousel'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Hidden } from '@material-ui/core'
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import PrimaryModal from '../../ui/PrimaryModal'
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +57,11 @@ const MapContainer =() =>{
     }
   },[ mapRef ])
 
+  const closeModal=()=>{
+    setOpen(false)
+    setClicked(null);
+    
+  }
   return(
     <Container>
       <div style={{display:'flex'}}>
@@ -70,7 +73,7 @@ const MapContainer =() =>{
         </div>
       </div>
       <Hidden smUp>
-        <PrimaryModal width={contentsWidth} place={clicked} open={open} onClose={()=>setOpen(false)} />
+        <PrimaryModal width={contentsWidth} place={clicked} open={open} onClose={()=>closeModal()} />
       </Hidden>
     </Container>
   )

@@ -54,7 +54,6 @@ const Map =({clicked, setClicked}) =>{
   return(
     <MapStyle>
       <VectorMap {...KoreaMap} layerProps={layerProps} checkedLayers={['nz-auk']} currentLayers={['nz-wgn']} />
-
     </MapStyle>
   )
 
