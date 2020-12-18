@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import Main from './pages/Main';
-import TravelRoute from './pages/Main/TravelRoute'
+import TravelRoute from './pages/TravelRoute'
 function App() {
   return (
     <Switch>

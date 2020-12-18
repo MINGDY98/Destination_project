@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
-import AriaSelectBox from '../../components/AriaSelectBox';
-import Footer from '../../containers/Footer'
+import AriaSelectBox from '../components/AriaSelectBox';
+import Footer from '../containers/Footer'
 
 const TravelRoute = ({match}) => {
 
