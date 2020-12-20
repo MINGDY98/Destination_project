@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import wave from '../../assets/images/wave.png'
@@ -28,6 +27,18 @@ const animate2 = keyframes`
   }
 `;
 
+const move= keyframes`
+  0% {
+    bottom: 0px;
+  }
+  50% {
+    bottom: 200px;
+  }
+  100% {
+    bottom: 0px;
+  }
+`;
+
 const Wave = styled.div`
   position:absolute;
   bottom:0;
@@ -36,9 +47,10 @@ const Wave = styled.div`
   height:100px;
   background-image:url(${wave});
   background-size:1000px 100px;
+ 
   ${(props) =>
     props.wave1 &&css`
-    animation: ${animate} 30s linear infinite;
+    animation: ${animate} 30s linear infinite, ${move} 10s linear 1;
     z-index:1000;
     opacity:1;
     animation-delay:0s;
@@ -46,7 +58,7 @@ const Wave = styled.div`
     `}
   ${(props) =>
     props.wave2 &&css`
-    animation: ${animate2} 15s linear infinite;
+    animation: ${animate2} 15s linear infinite,${move} 15s linear 1;
     z-index:999;
     opacity:0.5;
     animation-delay:-5s;
@@ -54,7 +66,7 @@ const Wave = styled.div`
     `}
   ${(props) =>
     props.wave3 &&css`
-    animation: ${animate} 20s linear infinite;
+    animation: ${animate} 20s linear infinite,${move} 12s linear 1;
       z-index:998;
       opacity:0.2;
       animation-delay:-2s;
@@ -62,7 +74,7 @@ const Wave = styled.div`
       `}    
   ${(props) =>
     props.wave4 &&css`
-    animation: ${animate2} 5s linear infinite;
+    animation: ${animate2} 5s linear infinite,${move} 15s linear 1;
     z-index:997;
     opacity:0.7;
     animation-delay:-5s;
@@ -83,4 +95,4 @@ const WaveContainer = () => {
 
   )
 }
-export default WaveContainer;
+export default WaveContainer; 
