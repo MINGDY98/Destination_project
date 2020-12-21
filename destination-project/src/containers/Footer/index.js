@@ -32,7 +32,6 @@ const Footer = () => {
         <Typography style={{color:'#281006',fontWeight:600, fontSize:15}} >BEST</Typography>
         <Typography style={{color:'#281006',fontWeight:600, fontSize:15}} >BEST</Typography>
       </div>
-
     </div>
     </div>
   )

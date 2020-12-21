@@ -82,7 +82,7 @@ export default function PrimarySelectBox() {
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill
           }}
-        />
+        /> 
       )}
     />
     </div>
