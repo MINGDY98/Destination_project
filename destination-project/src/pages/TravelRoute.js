@@ -9,7 +9,6 @@ const TravelRoute = ({match}) => {
   return (
     <>
       <AriaSelectBox/> 
-      <div style={{minHeight: '30vh'}} />
       {place}
       <WavesContainer/>
       <div style={{display:'block'}}>

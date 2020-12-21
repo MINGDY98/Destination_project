@@ -12,6 +12,7 @@ const useStyles = makeStyles ({
 })
 
 const WavesContainer = (canvasRef) => {
+  const canvasContainerRef = React.createRef()
   const classes = useStyles();
   let canvas;
   let ctx;
@@ -19,12 +20,14 @@ const WavesContainer = (canvasRef) => {
   var stageWidth;
   var stageHeight;
   var waveGroup;
+
   useEffect(()=>{
-    
     canvas = canvasRef.current;
     canvas = document.createElement('canvas');
     ctx = canvas.getContext('2d');
-    document.body.appendChild(canvas);
+    //console.log(document.body.find)
+    document.getElementById("canvas-container").appendChild(canvas)
+    //canvasContainerRef.appendChild(canvas);
 
     waveGroup = new WaveGroup();
     window.addEventListener("resize",resize,false);//window로 되어있길래 바꿔줌.근데 똑같음.
@@ -33,12 +36,12 @@ const WavesContainer = (canvasRef) => {
   },[])
 
   function resize(){
-    console.log("sad");
     stageWidth = document.body.clientWidth;
     stageHeight = document.body.clientHeight;
-    canvas.width=stageWidth*2;
-    canvas.height=stageHeight*2;
-    ctx.scale(2,2);
+    console.log(document.body.clientWidth)
+    canvas.width=stageWidth;
+    canvas.height=stageHeight;
+    ctx.scale(1,1);
     waveGroup.resize(stageWidth,stageHeight);
   }
   function animate(t){
@@ -47,9 +50,12 @@ const WavesContainer = (canvasRef) => {
     requestAnimationFrame(animate);
   }
   return (
-    <section className={classes.root}>
-      <canvas ref={canvasRef} />
-    </section>
+    <div id="canvas-container" className={classes.root} ref={canvasContainerRef}>
+      <section>
+        <canvas ref={canvasRef} />
+      </section>
+    </div>
+    
 
   )
 }
