@@ -27,12 +27,13 @@ const WavesContainer = (canvasRef) => {
     document.body.appendChild(canvas);
 
     waveGroup = new WaveGroup();
-    canvas.addEventListener("resize",resize,false);
+    window.addEventListener("resize",resize,false);//window로 되어있길래 바꿔줌.근데 똑같음.
     resize();
     requestAnimationFrame(animate);
   },[])
 
-  function resize(event){
+  function resize(){
+    console.log("sad");
     stageWidth = document.body.clientWidth;
     stageHeight = document.body.clientHeight;
     canvas.width=stageWidth*2;
