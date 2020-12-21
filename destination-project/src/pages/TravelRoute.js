@@ -2,7 +2,7 @@
 import React from 'react';
 import AriaSelectBox from '../components/AriaSelectBox';
 import Footer from '../containers/Footer'
-
+import WavesContainer from '../containers/Main/WavesContainer'
 const TravelRoute = ({match}) => {
 
   const {place} = match.params
@@ -11,7 +11,7 @@ const TravelRoute = ({match}) => {
       <AriaSelectBox/> 
       <div style={{minHeight: '30vh'}} />
       {place}
-      <div style={{minHeight: '80vh'}} />
+      <WavesContainer/>
       <div style={{display:'block'}}>
         <Footer/>
       </div>
