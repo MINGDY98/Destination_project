@@ -22,17 +22,16 @@ const Footer = () => {
         flexDirection:'column',
         justifyContent:'center',
         width: '100%',
-        height:240,
         backgroundImage:'url('+footer +')',
         backgroundSize:'cover'
       }}
     >
-    <div className={classes.root}>
-      <div style={{position:'absolute',top:-90}}>
-        <Typography style={{color:'#281006',fontWeight:600, fontSize:15}} >BEST</Typography>
-        <Typography style={{color:'#281006',fontWeight:600, fontSize:15}} >BEST</Typography>
+      <div className={classes.root}>
+        <div style={{paddingTop: 100, paddingBottom: 100}}>
+          <Typography style={{color:'#281006',fontWeight:600, fontSize:15}} >BEST</Typography>
+          <Typography style={{color:'#281006',fontWeight:600, fontSize:15}} >BEST</Typography>
+        </div>
       </div>
-    </div>
     </div>
   )
 }

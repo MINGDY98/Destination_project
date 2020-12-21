@@ -43,7 +43,6 @@ const MapContainer =() =>{
 
   React.useEffect(() => {
     if(mapRef.current != null ){
-      console.log(mapRef.current.offsetWidth)
       setContentsWidth(mapRef.current.offsetWidth)
     }
   },[ mapRef ])
