@@ -1,7 +1,7 @@
 import React, { createRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles'
-import styled ,{ css,keyframes } from 'styled-components';
 import {WaveGroup} from '../../canvas/WaveGroup.js'
+import { Button } from '@material-ui/core';
 const useStyles = makeStyles ({
   root: {
     width:'100%',
@@ -22,32 +22,59 @@ const WavesContainer = (canvasRef) => {
   var stageHeight;
   var waveGroup;
 
+  var anim;
+
+  const [waveup, setWaveup]= React.useState(0)
+
   useEffect(()=>{
-    canvas = canvasRef.current;
+    init();
+  },[])
+
+  function init(){
+    canvas = React.createRef()
     canvas = document.createElement('canvas');
     ctx = canvas.getContext('2d');
     document.getElementById("canvas-container").appendChild(canvas)
     waveGroup = new WaveGroup();
     window.addEventListener("resize",resize,false);//window로 되어있길래 바꿔줌.근데 똑같음.
-    resize();
-    requestAnimationFrame(animate);
-  },[])
-
-  function resize(){
-    stageWidth = canvasContainerRef.current.offsetWidth;
-    stageHeight = canvasContainerRef.current.clientHeight;
-    canvas.width=stageWidth;
-    canvas.height=stageHeight;
-    ctx.scale(1,1);
-    waveGroup.resize(stageWidth,stageHeight);
+    resize(0);
+    anim = requestAnimationFrame(animate);
+    console.log(anim)
   }
+
+  function resize(_height){
+    if(canvasContainerRef !== null || canvasContainerRef.curent !== null){
+      stageWidth = canvasContainerRef.current.offsetWidth;
+      stageHeight = canvasContainerRef.current.clientHeight;
+      canvas.width=stageWidth*2;
+      canvas.height=stageHeight;
+      ctx.scale(1,1);
+      waveGroup.resize(stageWidth,stageHeight, _height);
+    }
+  }
+
   function animate(t){
     ctx.clearRect(0,0,stageWidth,stageHeight);
-    waveGroup.draw(ctx);
+    waveGroup.draw(ctx, waveup);
     requestAnimationFrame(animate);
   }
+
+  const handleButton = () => {
+    //document.getElementById("canvas-container").removeChild(canvas);
+    setWaveup(200)
+    //init();
+    
+    //animate()
+  }
+
   return (
-    <div id="canvas-container" className={classes.root} ref={canvasContainerRef} />
+    <div>
+      <div style={{position:'fixed', top:0, right: 0}}>
+        <Button onClick={handleButton}>버튼</Button>
+      </div>
+      
+      <div id="canvas-container" className={classes.root} ref={canvasContainerRef} />
+    </div>
   )
 }
 export default WavesContainer; 

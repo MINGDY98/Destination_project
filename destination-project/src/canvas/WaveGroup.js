@@ -14,17 +14,17 @@ export class WaveGroup{
     }
   }
 
-  resize(stageWidth,stageHeight){
+  resize(stageWidth,stageHeight, height){
     for(let i=0;i<this.totalWaves;i++){
       const wave=this.waves[i];
-      wave.resize(stageWidth,stageHeight);
+      wave.resize(stageWidth,stageHeight, height);
     }
   }
 
-  draw(ctx){
+  draw(ctx, height){
     for(let i=0;i<this.totalWaves;i++){
       const wave=this.waves[i];
-      wave.draw(ctx);
+      wave.draw(ctx, height);
     }
   }
 }

@@ -1,8 +1,6 @@
 
 import {Point} from './Point.js';
 export class Wave  {
-
-
   constructor(index,totalPoints,color){
     this.index=index;
     this.totalPoints=totalPoints;
@@ -10,27 +8,28 @@ export class Wave  {
     this.points=[]; 
   }
 
-  resize(stageWidth,stageHeight){
+  resize(stageWidth, stageHeight, height){
     this.stageWidth= stageWidth;
-    this.stageHeight=stageHeight;
+    this.stageHeight=stageHeight+ height;
     this.centerX = stageWidth/2;
     this.centerY = stageHeight/2;
     this.pointGap=this.stageWidth/(this.totalPoints-1);
-    this.init();
+    this.init(height);
   }
 
-  init(){
+  init(height){
     this.points=[];
     for(let i=0;i<this.totalPoints;i++){
       const point = new Point(
         this.index+i,
         this.pointGap*i,
-        this.centerY
+        this.centerY,
+        height
       );
       this.points[i]=point;
     }
   }
-  draw(ctx){
+  draw(ctx, height){
     ctx.beginPath();
     ctx.fillStyle=this.color;
     let prevX =this.points[0].x;
@@ -38,7 +37,7 @@ export class Wave  {
     ctx.moveTo(prevX,prevY);
     for(let i =1; i<this.totalPoints;i++){
       if(i<this.totalPoints-1)(
-        this.points[i].update()
+        this.points[i].update(height)
       )
       const cx = (prevX + this.points[i].x)/2;
       const cy = (prevY + this.points[i].y)/2;
