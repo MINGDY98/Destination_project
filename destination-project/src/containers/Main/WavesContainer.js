@@ -49,7 +49,7 @@ const WavesContainer = (canvasRef) => {
       canvas.width=stageWidth*2;
       canvas.height=stageHeight;
       ctx.scale(1,1);
-      waveGroup.resize(stageWidth,stageHeight, _height);
+      waveGroup.resize(stageWidth,stageHeight, 0);
     }
   }
 

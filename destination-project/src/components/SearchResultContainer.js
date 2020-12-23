@@ -34,18 +34,21 @@ const MapContainer = ({ searchPlace }) => {
     }
   }, [searchPlace]);
 
+  const handleClickButton = (item) => {
+    setData([])
+    window.location.href=`/routes/${item.place_name}`
+  }
+
   return (
     <div>
       {data.map((item, idx) => {
         return(
-          <Link key={idx} to={`/routes/${item.place_name}`}  style={{ color: '#000000',textDecoration: 'none' }}>
-            <div>
-                <CardActionArea style={{padding: 9, borderBottom: '1px solid #eee'}}>
-                  <Typography>{item.place_name}</Typography>
-                  <Typography color="textSecondary" variant="body2">{item.road_address_name}</Typography>
-                </CardActionArea>
-            </div>
-          </Link>
+          <div onClick={()=>handleClickButton(item)} style={{cursor:'pointer'}}>
+            <CardActionArea style={{padding: 9, borderBottom: '1px solid #eee'}}>
+              <Typography>{item.place_name}</Typography>
+              <Typography color="textSecondary" variant="body2">{item.road_address_name}</Typography>
+            </CardActionArea>
+          </div>
         )
       })}
     </div>
