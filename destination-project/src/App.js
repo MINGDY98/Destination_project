@@ -1,16 +1,13 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import AriaSelectBox from './components/AriaSelectBox';
 import Footer from './containers/Footer';
 import WavesContainer from './containers/Main/WavesContainer';
 import Main from './pages/Main';
 import TravelRoute from './pages/TravelRoute'
-
 function App() {
   return (
     <div>
       <div>
-        <AriaSelectBox /> 
         <div style={{backgroundColor:'rgba(255, 255, 255, 0.6)', minHeight:'77vh'}}>
           <Switch>
             <Route exact path="/" component={Main}/>

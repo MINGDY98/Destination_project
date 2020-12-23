@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme=>({
   },
 
   root:{
-    display:'flex', 
+    width:630,
     paddingLeft: 9, paddingRight: 9, paddingTop: 3, paddingBottom: 3
   }
 }));
@@ -59,7 +59,7 @@ export default function AriaSelectBox() {
 
   return (
     <div className={classes.root}>
-      <Paper style={{width:'100%'}}>
+      <Paper style={{width:'100%',opacity:0.5}}>
         <div style={{display:'flex', flexGrow: 1, width: '100%'}}>
           <IconButton disabled>
             <SearchIcon />

@@ -12,7 +12,7 @@ export class Wave  {
     this.stageWidth= stageWidth;
     this.stageHeight=stageHeight+ height;
     this.centerX = stageWidth/2;
-    this.centerY = stageHeight/2;
+    this.centerY = stageHeight/(1.5);
     this.pointGap=this.stageWidth/(this.totalPoints-1);
     this.init(height);
   }
