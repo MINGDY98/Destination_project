@@ -3,19 +3,15 @@ import React from 'react';
 import AriaSelectBox from '../../components/AriaSelectBox';
 import MapContainer from '../../containers/Main/MapContainer';
 import Footer from '../../containers/Footer'
+import WavesContainer from '../../containers/Main/WavesContainer';
 
 
 const Main = () => {
 
   return (
-    <>
-      <AriaSelectBox/> 
+    <div>
       <MapContainer/>
-      <div style={{display:'block'}}>
-        <Footer/>
-      </div>
-
-    </>
+    </div>
 
   )
 }

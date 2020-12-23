@@ -2,7 +2,7 @@ import React from 'react';
 import Map from '../../components/Map'
 import SlickCarousel from '../../ui/SlickCarousel'
 import { makeStyles } from '@material-ui/core/styles'
-import { Container, Hidden } from '@material-ui/core'
+import { Container, Hidden, Typography } from '@material-ui/core'
 import PrimaryModal from '../../ui/PrimaryModal'
 
 const useStyles = makeStyles((theme) => ({
@@ -12,6 +12,8 @@ const useStyles = makeStyles((theme) => ({
   contentsContainer: {
     flexGrow: 1,
     width:'100%',
+    alignSelf:'center',
+    margin: 12,
     [theme.breakpoints.down('sm')]: {
       display:'none'
     }
@@ -21,8 +23,10 @@ const useStyles = makeStyles((theme) => ({
 const PlaceName = ({ clicked, width}) => {
   if(!clicked){
     return(
-      <div style={{width:'100%', display:'flex', flexDirection:'column', height:'100%', justifyContent:'center', textAlign:'center'}}>
-        지역을 선택해주세요.
+      <div style={{width:'100%', display:'flex', flexDirection:'column', justifyContent:'center', textAlign:'center', alignSelf:'center'}}>
+        <Typography style={{paddingTop: 200, paddingBottom: 200}}>
+          지역을 선택해주세요.
+        </Typography>
       </div>
     )
   }else{

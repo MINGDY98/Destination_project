@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles({
   root:{
     display:'flex',
-    position:'relative'
+    position:'relative',
   },
 });
 
@@ -21,13 +21,11 @@ const Footer = () => {
         flexDirection:'column',
         justifyContent:'center',
         width: '100%',
-        backgroundImage:'url('+footer +')',
-        backgroundSize:'cover'
       }}
     >
       <div className={classes.root}>
         <Container style={{paddingTop: 100, paddingBottom: 100}}>
-          <Typography style={{color:'#281006',fontWeight:600, fontSize:15}} >BEST</Typography>
+          <Typography style={{color:'#565656',fontWeight:600, fontSize:15}} >Github https://github.com/MINGDY98</Typography>
           <Typography style={{color:'#281006',fontWeight:600, fontSize:15}} >BEST</Typography>
         </Container>
       </div>

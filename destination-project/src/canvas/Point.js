@@ -4,9 +4,9 @@ export class Point  {
     this.x = x;
     this.y = y;
     this.fixedY=y;
-    this.speed=0.02;
+    this.speed=0.008;
     this.cur =index;
-    this.max = Math.random() * 100 +(150);
+    this.max = Math.random() * 100 +(50);
   }
 
   update(height){

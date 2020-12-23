@@ -62,17 +62,16 @@ const WavesContainer = (canvasRef) => {
   const handleButton = () => {
     //document.getElementById("canvas-container").removeChild(canvas);
     setWaveup(200)
+    setInterval(() => {
+
+    }, 10)
     //init();
     
     //animate()
   }
 
   return (
-    <div>
-      <div style={{position:'fixed', top:0, right: 0}}>
-        <Button onClick={handleButton}>버튼</Button>
-      </div>
-      
+    <div>      
       <div id="canvas-container" className={classes.root} ref={canvasContainerRef} />
     </div>
   )

@@ -9,37 +9,37 @@ const MapStyle =  styled.div`
     width:'100%';
 
     svg {
-      stroke: #fff;
+      stroke: #f6f6f6;
 
       // All layers are just path elements
       path {
-        fill: #a82b2b;
+        fill: rgba(0,199,235, 0.5);
         cursor: pointer;
         outline: none;
 
         // When a layer is hovered
         &:hover {
-          fill: rgba(168,43,43,0.83);
+          fill: rgba(0,199,235,0.83);
         }
 
         // When a layer is focused.
         &:focus {
-          fill: rgba(168,43,43,0.6);
+          fill: rgba(0,199,235,0.7);
         }
 
         // When a layer is 'checked' (via checkedLayers prop).
         &[aria-checked='true'] {
-          fill: rgba(56,43,168,1);
+          fill: rgba(0,199,235,1);
         }
 
         // When a layer is 'selected' (via currentLayers prop).
         &[aria-current='true'] {
-          fill: rgba(56,43,168,0.83);
+          fill: rgba(0,199,235,0.83);
         }
 
         // You can also highlight a specific layer via it's id
         &[id="nz-can"] {
-          fill: rgba(56,43,168,0.6);
+          fill: rgba(0,199,235,0.6);
         }
       }
     }`;

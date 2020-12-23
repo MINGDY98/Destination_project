@@ -12,6 +12,9 @@ import pink from '../assets/images/pink.jpg'
 import purple from '../assets/images/purple.jpg'
 import black from '../assets/images/black.jpg'
 import white from '../assets/images/white.jpg'
+import { Button, IconButton, Paper, Typography } from "@material-ui/core";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 const SeoulImage = [red,orange];
 const BusanImage = [orange,yellow];
@@ -53,7 +56,28 @@ export default function SlickCarousel ({place, height, width}){
     return null
   }
 
+  const getKorNameByPlace = () => {
+    if(place === "Seoul") return "서울"
+    if(place === "Busan") return "부산"
+    if(place === "Daegu") return "대구"
+    if(place === "Incheon") return "인천"
+    if(place === "Gwangju") return "광주"
+    if(place === "Daejeon") return "대전"
+    if(place === "Ulsan") return "울산"
+    if(place === "Gyeonggi") return "경기"
+    if(place === "Gangwon") return "강원"
+    if(place === "North Chungcheong") return "충청북도"
+    if(place === "South Chungcheong") return "충청남도"
+    if(place === "North Jeolla") return "전라북도"
+    if(place === "South Jeolla") return "전라남도"
+    if(place === "North Gyeongsang") return "경상북도"
+    if(place === "South Gyeongsang") return "경상남도"
+    if(place === "Jeju") return "제주도"
+    if(place === "Sejong") return "세종"
+    return null
+  }
 
+  const sliderRef = React.useRef();
   const [currentData, setCurrentData] = React.useState(getImgByPlace(place))
 
   React.useEffect(() => {
@@ -62,12 +86,16 @@ export default function SlickCarousel ({place, height, width}){
 
   const NextArrow=({ className, style, onClick })=>{
     return (
-      <div
-        className={className}
-        style={{ ...style, display: "block", backgroundColor: "#FF0000",zIndex:3 }}
-        onClick={onClick}
-      >
-      </div>
+      <IconButton onClick={onClick}>
+        <ArrowForwardIosIcon />
+      </IconButton>
+    );
+  }
+  const PrevArrow=({ className, style, onClick })=>{
+    return (
+      <IconButton onClick={onClick} style={{display:'inline-block'}}>
+        <ArrowBackIosIcon />
+      </IconButton>
     );
   }
 
@@ -76,24 +104,50 @@ export default function SlickCarousel ({place, height, width}){
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
+    arrows: false,
   }
 
-    return (
-      <div style={{width: width, margin: 24}}>
-        <h2>{place}</h2>
-        <Slider {...cardSettings}>
-          {currentData != null && currentData.map((item, idx) => {
-            return(
-              <div style={{width: width}} key={idx}>
-                <div style={{width: width, height:'300', overflow:'auto'}}>
-                  <img width={width} height="300" src={item} alt={123}/>
-                </div>
-              </div>
-            )
-          })}
-        </Slider>
-        
-      </div>
-    );
+  const handleNext = () => {
+    if(sliderRef != null){
+      //console.log(sliderRef.current.slickNext());
+      sliderRef.current.slickNext()
+    }
   }
+
+  const handlePrev = () => {
+    if(sliderRef != null){
+      //console.log(sliderRef.current.slickPrev());
+      sliderRef.current.slickPrev()
+    }
+
+  }
+
+  return (
+    <div style={{width: width, margin: 24}}>
+      <div style={{display:'flex', justifyContent:'flex-end'}}>
+        <PrevArrow  onClick={handlePrev}/>
+        <NextArrow onClick={handleNext}/>
+      </div>
+      <Slider ref={sliderRef} {...cardSettings}>
+        {currentData != null && currentData.map((item, idx) => {
+          return(
+            <div style={{width: width}} key={idx}>
+              <div style={{width: width, height:'300', overflow:'auto'}}>
+                <Paper style={{overflow:'hidden', marginBottom: 24}}>
+                  <img width={width} height="300" src={item} alt={123}/>
+                </Paper>
+                <Typography variant="caption" style={{display:'block'}} color="textSecondary">{getKorNameByPlace()}</Typography>
+                <Typography variant="h6"><strong>코스 이름</strong></Typography>
+                <Typography variant="body2" color="textSecondary">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                  Why do we use it?
+                </Typography>
+                <Button fullWidth style={{backgroundColor:'rgba(0,199,235, 0.5)', color:'#565656', marginTop: 24}}>여행 루트 보기</Button>          
+              </div>
+            </div>
+          )
+        })}
+      </Slider>
+     </div>
+  );
+}
