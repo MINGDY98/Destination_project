@@ -21,6 +21,7 @@ const Footer = () => {
         flexDirection:'column',
         justifyContent:'center',
         width: '100%',
+        backgroundColor:'blue'
       }}
     >
       <div className={classes.root}>

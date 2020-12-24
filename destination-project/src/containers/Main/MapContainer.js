@@ -4,16 +4,18 @@ import SlickCarousel from '../../ui/SlickCarousel'
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Hidden, Typography } from '@material-ui/core'
 import PrimaryModal from '../../ui/PrimaryModal'
-
+import cloud from '../../assets/images/cloud.jpg'
+import PrimaryCard from '../../ui/PrimaryCard'
+import PrimaryCoverFlow from '../../ui/PrimaryCoverFlow'
 const useStyles = makeStyles((theme) => ({
   mapContainer: {
     flexGrow: 1, width:'100%'
   },
   contentsContainer: {
-    flexGrow: 1,
-    width:'100%',
-    alignSelf:'center',
-    margin: 12,
+    //flexGrow: 4,
+    //width:'100%',
+    //alignSelf:'center',
+    //margin: 12,
     [theme.breakpoints.down('sm')]: {
       display:'none'
     }
@@ -31,12 +33,16 @@ const PlaceName = ({ clicked, width}) => {
     )
   }else{
     return(
-      <SlickCarousel place={clicked} width={width} />
+      <div style={{display:'flex',flexDirection:'row'}}>
+        <div style={{paddingRight:50}}/>
+        <PrimaryCoverFlow/>
+      </div>
+
     )
   }
 }
 
-const MapContainer =() =>{
+const MapContainer =({width,height}) =>{
   const classes = useStyles();
   const [clicked, setClicked] = React.useState(null);
   const mapRef = React.useRef(null);
@@ -57,19 +63,22 @@ const MapContainer =() =>{
     
   }
   return(
-    <Container>
-      <div style={{display:'flex'}}>
-        <div ref={mapRef} className={classes.mapContainer} onClick={()=>setOpen(true)}>
-          <Map clicked={clicked} setClicked={setClicked} />
+    <div style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundcolor:'white',backgroundSize:'cover',justifyContent:'center',alignItems:'center'}}>
+      <Container maxWidth="100">
+        <div style={{display:'flex',alignItems:'center',position:'relative'}}>
+          <div style={{paddingLeft:50, width:500}}>
+            <Map clicked={clicked} setClicked={setClicked} />
+          </div>
+          <div className={classes.contentsContainer}>
+            <PlaceName width={contentsWidth} clicked={clicked} />
+          </div>
         </div>
-        <div className={classes.contentsContainer}>
-          <PlaceName width={contentsWidth} clicked={clicked} />
-        </div>
-      </div>
-      <Hidden smUp>
-        <PrimaryModal place={clicked} open={open} onClose={()=>closeModal()} />
-      </Hidden>
-    </Container>
+        <Hidden smUp>
+          <PrimaryModal place={clicked} open={open} onClose={()=>closeModal()} />
+        </Hidden>
+      </Container>
+    </div>
+    
   )
 }
 export default MapContainer;

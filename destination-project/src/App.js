@@ -4,6 +4,7 @@ import Footer from './containers/Footer';
 import WavesContainer from './containers/Main/WavesContainer';
 import Main from './pages/Main';
 import TravelRoute from './pages/TravelRoute'
+import PrimaryCoverFlow from './ui/PrimaryCoverFlow'
 function App() {
   return (
     <div>
@@ -15,14 +16,11 @@ function App() {
             <Route path="/routes" component={TravelRoute} />
           </Switch>
         </div>
-     
+        <PrimaryCoverFlow/>
         <div style={{display:'block'}}>
           <Footer/>
         </div>
       </div>
-      <div style={{position:'fixed', bottom: 0, width:'100%', opacity: 0.5, zIndex: -999}}>
-        <WavesContainer />
-      </div>  
     </div> 
   );
 }

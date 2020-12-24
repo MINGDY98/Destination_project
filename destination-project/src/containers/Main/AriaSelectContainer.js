@@ -4,7 +4,10 @@ import KoreaNamsan from '../../assets/images/korea_namsan.jpg'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-const AriaSelectContainer = () => {
+const AriaSelectContainer = ({width,height}) => {
+{/**
+
+
   const [width,setWidth]= React.useState(window.innerWidth);
   const [height,setHeight]= React.useState(window.innerHeight);
 
@@ -16,6 +19,8 @@ const AriaSelectContainer = () => {
     window.addEventListener("resize",updateWidthAndHeight);
     return () => window.removeEventListener("resize", updateWidthAndHeight);
   });
+*/}
+
  
 
   return (

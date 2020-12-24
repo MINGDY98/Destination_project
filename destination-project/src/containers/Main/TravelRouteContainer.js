@@ -9,9 +9,11 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import white from '../../assets/images/white.jpg'
 import { Container, Paper } from '@material-ui/core';
+
 const TravelRouteContainer = ({place}) => {
   const [width,setWidth]= React.useState(window.innerWidth);
   const [height,setHeight]= React.useState(window.innerHeight);
@@ -29,46 +31,36 @@ const TravelRouteContainer = ({place}) => {
 
 
   return (
-    <div style={{width:width,height:height,backgroundImage:'url('+KoreaNightView+')',backgroundSize:'cover'}}>
-      <div>
-        <Timeline align="alternate">
-            <TimelineItem>
-            <TimelineSeparator>
-              <CheckCircleOutlineIcon style={{fill: 'rgba(0,199,235, 1)', width: 36, height: 36}}/>
-              <TimelineConnector  style={{backgroundColor:'rgba(0,199,235, 0.5)'}}/>
-            </TimelineSeparator>
-            <TimelineContent>Eat</TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineSeparator>
-              <CheckCircleOutlineIcon style={{fill: 'rgba(0,199,235, 1)', width: 36, height: 36}}/>
-              <TimelineConnector  style={{backgroundColor:'rgba(0,199,235, 0.5)'}}/>
-            </TimelineSeparator>
-            <TimelineContent>Code</TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineSeparator>
-              <CheckCircleOutlineIcon style={{fill: 'rgba(0,199,235, 1)', width: 36, height: 36}}/>
-              <TimelineConnector  style={{backgroundColor:'rgba(0,199,235, 0.5)'}}/>
-            </TimelineSeparator>
-            <TimelineContent>Sleep</TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineSeparator>
-              <CheckCircleOutlineIcon style={{fill: 'rgba(0,199,235, 1)', width: 36, height: 36}}/>
-              <TimelineConnector  style={{backgroundColor:'rgba(0,199,235, 0.5)'}}/>
-            </TimelineSeparator>
-            <TimelineContent>
-              <Paper elevation={3}>
-                <Typography variant="h6" component="h1">
-                  Sleep
-                </Typography>
-                <Typography>Because you need rest</Typography>
-              </Paper>
-            </TimelineContent>
-          </TimelineItem>
-        </Timeline>
+    <div style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:'url('+KoreaNightView+')',backgroundSize:'cover'}}>
+      <div style={{flexGrow:4,flexBasis:0,display:'flex',alignItems:'center'}}>
+        <div style={{position:'absolute', left:50, bottom:100}}>
+          <Typography style={{color:"#ffffff"}} variant="h1">상세 지역 이름 </Typography>
         </div>
+      </div>
+      <div style={{flexGrow:1,flexBasis:0,display:'flex',alignItems:'center',backgroundColor:'rgba(0, 0, 0, 0.5)'}}>
+        
+          <Timeline align="right">
+            {data.map((item, idx) => {
+              return(
+                <TimelineItem>
+                  <TimelineSeparator >
+                    <TimelineDot variant="outlined"/>
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent style={{paddingBottom:60}}>
+                    <div>
+                      <Typography style={{color:"#ffffff"}} variant="subtitle2"><strong>{item}</strong></Typography>
+                      <Typography style={{color:"#ffffff"}} variant="subtitle2">평점 : <strong>4.9</strong></Typography>
+                      <Typography style={{color:"#ffffff"}} variant="subtitle2">소요 시간 : <strong>20분</strong></Typography>
+                      <Typography style={{color:"#ffffff"}} variant="subtitle2">이용 요금 : <strong>100만원</strong></Typography>
+                    </div>
+
+                  </TimelineContent>
+                </TimelineItem>
+              )
+            })}
+          </Timeline>
+      </div>
     </div>
 
   )
