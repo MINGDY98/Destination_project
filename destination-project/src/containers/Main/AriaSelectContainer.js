@@ -3,7 +3,7 @@ import AriaSelectBox from '../../components/AriaSelectBox';
 import KoreaNamsan from '../../assets/images/korea_namsan.jpg'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-
+import PrimaryGuideContent from '../../ui/PrimaryGuideContent'
 const AriaSelectContainer = ({width,height}) => {
 {/**
 
@@ -24,7 +24,7 @@ const AriaSelectContainer = ({width,height}) => {
  
 
   return (
-    <div style={{display:'flex',flexDirection:'row',justifyContent:'center',width:width,height:height,backgroundImage:'url('+KoreaNamsan+')',backgroundSize:'cover'}}>
+    <div style={{display:'flex',position:'relative',flexDirection:'row',justifyContent:'center',width:width,height:height,backgroundImage:'url('+KoreaNamsan+')',backgroundSize:'cover'}}>
        <div style={{flexGrow:2,flexBasis:0,display:'flex',alignItems:'center'}}>
           <div style={{display:'flex',flexDirection:'column',paddingLeft:100}}>
             <Typography variant="h1" style={{color:'#ffffff',fontStyle:'oblique'}}>한국 여행</Typography>
@@ -33,6 +33,9 @@ const AriaSelectContainer = ({width,height}) => {
         </div>
         <div style={{flexGrow:4,flexBasis:0,display:'flex',alignItems:'center'}}>
           < AriaSelectBox/>
+        </div>
+        <div style={{position:'absolute',right:30, bottom:20}}>
+            <PrimaryGuideContent text={"scroll down"}/>
         </div>
     </div>
 

@@ -4,8 +4,7 @@ import AriaSelectContainer from '../../containers/Main/AriaSelectContainer'
 import MapContainer from '../../containers/Main/MapContainer';
 import Footer from '../../containers/Footer'
 import WavesContainer from '../../containers/Main/WavesContainer';
-
-
+import Sample from '../../components/Sample';
 const Main = () => {
   const [width,setWidth]= React.useState(window.innerWidth);
   const [height,setHeight]= React.useState(window.innerHeight);
@@ -22,6 +21,7 @@ const Main = () => {
     <div>
       <AriaSelectContainer width={width} height={height}/>
       <MapContainer width={width} height={height}/>
+      <Sample/>
     </div>
 
   )

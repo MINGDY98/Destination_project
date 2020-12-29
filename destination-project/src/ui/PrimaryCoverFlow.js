@@ -30,7 +30,7 @@ export default function PrimaryCoverFlow(){
           role="menuitem"
           tabIndex="0"
         >
-        
+        <div style={{backgroundcolor:'white',backgroundSize:'cover'}}/>
         </div>
         <PrimaryCard place={"happy"}/>
         <img src={korea_namsan} alt='Album two' data-action="http://passer.cc"/>
