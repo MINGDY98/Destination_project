@@ -7,13 +7,16 @@ export class Particle {
     this.size= size;
     this.angle=angle;
     this.color= color;
+    this.position=new Vector(this.x,this.y);
+    this.shift=new Vector(this.x,this.y);
+    
   }
 
 
   update(target,index,position,shift,speed,size,targetSize,orbit){
-    position=new Vector(this.x,this.y);
-    shift=new Vector(this.x,this.y);
-    speed = speed || 0.01 + Math.random() * 0.04;
+    
+    this.speed = speed || 0.01 + Math.random() * 0.04;
+    
     this.angle = this.angle||0;
 
     if(this.color){
@@ -35,11 +38,11 @@ export class Particle {
   
     this.angle += speed;
 
-    shift.x += (target.x - shift.x) * speed;
-    shift.y += (target.y - shift.y) * speed;
+    this.shift.x += (target.x - this.shift.x) * speed;
+    this.shift.y += (target.y - this.shift.y) * speed;
 
-    position.x = shift.x + Math.cos(index + this.angle) * orbit;
-    position.y = shift.y + Math.sin(index + this.angle) * orbit;
+    this.position.x = this.shift.x + Math.cos(index + this.angle) * orbit;
+    this.position.y = this.shift.y + Math.sin(index + this.angle) * orbit;
     
     //if(!isSafari) {
       size += (targetSize - size) * 0.03;
