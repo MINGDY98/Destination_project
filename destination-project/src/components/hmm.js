@@ -1,6 +1,3 @@
-import { Typography } from '@material-ui/core'
-import React,{useRef} from 'react'
-
 function useEventListener(eventName, handler, element = document) {
   const savedHandler = React.useRef()
 
@@ -28,14 +25,13 @@ function useEventListener(eventName, handler, element = document) {
  *
  * @author Stephen Scaff
  */
-export default function Sample({
-  color = '255, 255, 255',
+function AnimatedCursor({
+  color = '220, 90, 90',
   outerAlpha = 0.4,
-  innerAlpha = 0.4,
   innerSize = 8,
   outerSize = 8,
-  outerScale = 1,
-  innerScale = 1
+  outerScale = 5,
+  innerScale = 0.7
 }) {
   const cursorOuterRef = React.useRef()
   const cursorInnerRef = React.useRef()
@@ -54,7 +50,6 @@ export default function Sample({
     cursorInnerRef.current.style.left = clientX + 'px'
     endX.current = clientX
     endY.current = clientY
-    //console.log("ClientX: "+clientX+"clientY:"+clientY);
   }, [])
 
   const animateOuterCursor = React.useCallback(
@@ -88,11 +83,9 @@ export default function Sample({
     if (isActive) {
       cursorInnerRef.current.style.transform = `scale(${innerScale})`
       cursorOuterRef.current.style.transform = `scale(${outerScale})`
-      cursorOuterRef.current.style.opacity = 0
     } else {
-      cursorInnerRef.current.style.transform = 'scale(6)'
-      cursorOuterRef.current.style.transform = 'scale(2)'
-      cursorOuterRef.current.style.opacity = 1
+      cursorInnerRef.current.style.transform = 'scale(1)'
+      cursorOuterRef.current.style.transform = 'scale(1)'
     }
   }, [innerScale, outerScale, isActive])
 
@@ -176,29 +169,43 @@ export default function Sample({
       width: innerSize,
       height: innerSize,
       pointerEvents: 'none',
-      backgroundColor: `rgba(${color},${innerAlpha})`,
+      backgroundColor: `rgba(${color}, 1)`,
       transition: 'opacity 0.15s ease-in-out, transform 0.25s ease-in-out'
     },
     cursorOuter: {
       position: 'fixed',
-      //borderRadius: '100%',
+      borderRadius: '50%',
       pointerEvents: 'none',
-      width: 0,
-      height: 0,
+      width: outerSize,
+      height: outerSize,
       backgroundColor: `rgba(${color}, ${outerAlpha})`,
-      transition: 'opacity 0.15s ease-in-out, transform 0.15s ease-in-out',
-
+      transition: 'opacity 0.15s ease-in-out, transform 0.15s ease-in-out'
     }
   }
 
   return (
-    <div>
-      <div ref={cursorOuterRef} style={styles.cursorOuter} >
-        <Typography style={{color:'#ffffff'}} variant="caption">click</Typography> 
-      </div>
+    <React.Fragment>
+      <div ref={cursorOuterRef} style={styles.cursorOuter} />
       <div ref={cursorInnerRef} style={styles.cursorInner} />
-    </div>
+    </React.Fragment>
   )
 }
 
+
+function App() {
+  return (
+    <div className="App">
+      <AnimatedCursor/>
+      <section>
+        <h1>Animated Cursor <br/>React Component</h1>
+        <hr/>
+        <p>An animated cursor component made as a <a>Functional Component</a>, using <a>React hooks</a> like <a>useEffect</a> to handle event listeners, local state, an  <a>RequestAnimationFrame</a> management.</p>
+        <p>Hover over these <a>links</a> and see how that animated cursor does it's thing. Kinda nifty, right? Not right for most things, but a nice move for more interactive-type projects. Here's another <a href="">link to nowhere.</a></p>
+        <p>Play with the <a>css variables</a> to influence the cursor, cursor outline size, and amount of scale on target hover. I suppose those could all be <a>props</a> with some. Click in the margin to check click animation.</p>
+      <p>There's probably a better way to manage these kind of events, but this was the best I could come up with. Recently started mucking more with React cause I'm down with the simplicity of Functional Components and Hooks. And if you read the docs, the future ain't class components. So, best get on them functions.</p>
+      </section>
+    </div>
+  );
+}
+ReactDOM.render(<App />, document.getElementById('app'))
 
