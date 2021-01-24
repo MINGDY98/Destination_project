@@ -2,7 +2,7 @@ import React from 'react';
 import Map from '../../components/Map'
 import SlickCarousel from '../../ui/SlickCarousel'
 import { makeStyles } from '@material-ui/core/styles'
-import { Container, Grid, Hidden, Typography } from '@material-ui/core'
+import { CardActionArea, Container, Grid, Hidden, Typography } from '@material-ui/core'
 import PrimaryModal from '../../ui/PrimaryModal'
 import cloud from '../../assets/images/cloud.jpg'
 import PrimaryCard from '../../ui/PrimaryCard'
@@ -33,8 +33,14 @@ const PlaceName = ({ clicked, width}) => {
     )
   }else{
     return(
-      <div style={{display:'flex',flexDirection:'row'}}>
-        <div style={{paddingRight:50}}/>
+      <div style={{display:'flex', flexDirection:'column', justifyContent:'center', textAlign:'center', height:'100%', borderRadius:6, border:'1px solid #FFF', borderColor:'#FFF'}}>
+        <Container>
+          <CardActionArea onClick={()=>window.location.href="/routes"}>
+            <Typography style={{color:'#FFF', cursor:'pointer'}}>
+              해당 UI는 프로토타입입니다. 이 텍스트 클릭시 미리 작성된 여행경로 추천 페이지로 이동합니다.
+            </Typography>
+          </CardActionArea>
+        </Container>
       </div>
 
     )
