@@ -4,6 +4,8 @@ import KoreaNamsan from '../../assets/images/korea_namsan.jpg'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import PrimaryGuideContent from '../../ui/PrimaryGuideContent'
+import { Container, Grid } from '@material-ui/core';
+import MapContainer from './MapContainer';
 const AriaSelectContainer = ({width,height}) => {
 {/**
 
@@ -24,21 +26,19 @@ const AriaSelectContainer = ({width,height}) => {
  
 
   return (
-    <div style={{display:'flex',position:'relative',flexDirection:'row',justifyContent:'center',width:width,height:height,backgroundImage:'url('+KoreaNamsan+')',backgroundSize:'cover'}}>
-       <div style={{flexGrow:2,flexBasis:0,display:'flex',alignItems:'center'}}>
-          <div style={{display:'flex',flexDirection:'column',paddingLeft:100}}>
-            <Typography variant="h1" style={{color:'#ffffff',fontStyle:'oblique'}}>한국 여행</Typography>
-            <Typography variant="h1" style={{color:'#ffffff',fontStyle:'oblique'}}> 길잡이</Typography>
-          </div>
-        </div>
-        <div style={{flexGrow:4,flexBasis:0,display:'flex',alignItems:'center'}}>
-          < AriaSelectBox/>
-        </div>
-        <div style={{position:'absolute',right:30, bottom:20}}>
-            <PrimaryGuideContent text={"scroll down"}/>
-        </div>
+    <div style={{backgroundImage:'url('+KoreaNamsan+')',backgroundSize:'cover', height:'100vh'}}>
+      <Container style={{display:'flex',flexDirection:'column',justifyContent:'center', height:'100%'}}>
+        <Grid container >
+          <Grid item xs={12} md={3}>
+            <div style={{display:'flex',flexDirection:'column', height:'100%', justifyContent:'center',textAlign:'right'}}>
+              <Typography style={{color:'#ffffff', fontSize: 42, fontStyle:"oblique", marginBottom: 10}}><strong>한국 여행</strong></Typography>
+              <Typography style={{color:'#ffffff', fontSize: 42}}><strong>길  잡  이</strong></Typography>
+            </div>
+          </Grid>
+          <MapContainer width={width} height={height}/>
+        </Grid>      
+      </Container>
     </div>
-
   )
 }
 export default AriaSelectContainer;
