@@ -16,7 +16,6 @@ function App() {
             <Route path="/routes" component={TravelRoute} />
           </Switch>
         </div>
-        <PrimaryCoverFlow/>
         <div style={{display:'block'}}>
           <Footer/>
         </div>

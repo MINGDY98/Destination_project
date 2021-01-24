@@ -3,6 +3,8 @@ import AriaSelectBox from '../../components/AriaSelectBox';
 import KoreaNamsan from '../../assets/images/korea_namsan.jpg'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import MapContainer from './MapContainer';
+import { Container, Grid } from '@material-ui/core';
 
 const AriaSelectContainer = ({width,height}) => {
 {/**
@@ -25,17 +27,22 @@ const AriaSelectContainer = ({width,height}) => {
 
   return (
     <div style={{display:'flex',flexDirection:'row',justifyContent:'center',width:width,height:height,backgroundImage:'url('+KoreaNamsan+')',backgroundSize:'cover'}}>
-       <div style={{flexGrow:2,flexBasis:0,display:'flex',alignItems:'center'}}>
-          <div style={{display:'flex',flexDirection:'column',paddingLeft:100}}>
-            <Typography variant="h1" style={{color:'#ffffff',fontStyle:'oblique'}}>한국 여행</Typography>
-            <Typography variant="h1" style={{color:'#ffffff',fontStyle:'oblique'}}> 길잡이</Typography>
-          </div>
-        </div>
-        <div style={{flexGrow:4,flexBasis:0,display:'flex',alignItems:'center'}}>
-          < AriaSelectBox/>
-        </div>
+      <Container>
+        <Grid container>
+          <Grid item xs={12} md={3}>
+            <div style={{display:'flex',flexDirection:'column', height:'100%', justifyContent:'center',textAlign:'right'}}>
+              <Typography style={{color:'#ffffff', fontSize: 42, fontStyle:"oblique", marginBottom: 10}}><strong>한국 여행</strong></Typography>
+              <Typography style={{color:'#ffffff', fontSize: 42}}><strong>길  잡  이</strong></Typography>
+            </div>
+          </Grid>
+          <Grid item xs={12} md={9}>
+            <div>
+              <MapContainer width={width} height={height}/>
+            </div>
+          </Grid>
+        </Grid>      
+      </Container>
     </div>
-
   )
 }
 export default AriaSelectContainer;

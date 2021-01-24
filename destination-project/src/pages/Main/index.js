@@ -21,7 +21,6 @@ const Main = () => {
   return (
     <div>
       <AriaSelectContainer width={width} height={height}/>
-      <MapContainer width={width} height={height}/>
     </div>
 
   )

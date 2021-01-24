@@ -13,7 +13,7 @@ const MapStyle =  styled.div`
 
       // All layers are just path elements
       path {
-        fill: rgba(0,0,102, 0.5);
+        fill: rgba(0,0,102, 0.9);
         cursor: pointer;
         outline: none;
 

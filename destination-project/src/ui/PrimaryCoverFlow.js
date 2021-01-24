@@ -9,7 +9,6 @@ import PrimaryCard from './PrimaryCard';
 export default function PrimaryCoverFlow(){
   const [active, setActive] = React.useState(0);
 
-
   const fn = () =>{
     console.log("happy");
 
@@ -23,6 +22,7 @@ export default function PrimaryCoverFlow(){
         navigation={false}
         enableHeading={false}
         active={active}
+        style={{backgroundColor:'#FFF'}}
       >
         <div
           onClick={() => fn()}

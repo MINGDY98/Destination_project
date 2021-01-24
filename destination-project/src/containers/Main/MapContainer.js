@@ -35,7 +35,6 @@ const PlaceName = ({ clicked, width}) => {
     return(
       <div style={{display:'flex',flexDirection:'row'}}>
         <div style={{paddingRight:50}}/>
-        <PrimaryCoverFlow/>
       </div>
 
     )
@@ -64,7 +63,7 @@ const MapContainer =({width,height}) =>{
   }
   return(
     <div style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundcolor:'white',backgroundSize:'cover',justifyContent:'center',alignItems:'center'}}>
-      <Container maxWidth="100">
+      <Container>
         <div style={{display:'flex',alignItems:'center',position:'relative'}}>
           <div style={{paddingLeft:50, width:500}}>
             <Map clicked={clicked} setClicked={setClicked} />
@@ -73,9 +72,6 @@ const MapContainer =({width,height}) =>{
             <PlaceName width={contentsWidth} clicked={clicked} />
           </div>
         </div>
-        <Hidden smUp>
-          <PrimaryModal place={clicked} open={open} onClose={()=>closeModal()} />
-        </Hidden>
       </Container>
     </div>
     
