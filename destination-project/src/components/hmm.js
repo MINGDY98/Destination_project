@@ -1,13 +1,3 @@
-import { Typography } from '@material-ui/core'
-import React, { useEffect } from 'react';
-
-import KoreaNightView from '../../assets/images/korea_nightView.jpg'
-import KoreaPalace from '../../assets/images/korea_palace.jpg'
-import KoreaNamsan from '../../assets/images/korea_namsan.jpg'
-import KoreaPond from '../../assets/images/korea_pond.jpg'
-
-import TravelRoute from '../../components/TravelRoute';
-
 function useEventListener(eventName, handler, element = document) {
   const savedHandler = React.useRef()
 
@@ -29,54 +19,25 @@ function useEventListener(eventName, handler, element = document) {
   }, [eventName, element])
 }
 
-const TravelRouteContainer = ({place}) => {
-
-  const [width,setWidth]= React.useState(window.innerWidth);
-  const [height,setHeight]= React.useState(window.innerHeight);
-  const sampleData=[    
-    'url('+KoreaNightView+')',
-    'url('+KoreaPalace+')',
-    'url('+KoreaNamsan+')',
-    'url('+KoreaPond+')'
-  ]
-  const [index, setIndex]=React.useState(0);
-  const [backgroundImage,setBackgroundImage] = React.useState(sampleData[index]);
-  
-  const updateWidthAndHeight = () => {
-    setWidth(window.innerWidth);
-    setHeight(window.innerHeight);
-  };
-  useEffect(() => {
-    window.addEventListener("resize",updateWidthAndHeight);
-    return () => window.removeEventListener("resize", updateWidthAndHeight);
-  },[index]);
-
-  const handleClick=() =>{
-    if(sampleData.length===(index+1)){
-      setBackgroundImage(sampleData[0]);
-      setIndex(0);
-    }
-    else if(sampleData.length>(index+1)){
-      setBackgroundImage(sampleData[index+1]);
-      setIndex(1+index);
-    }
-
-  }
-//여기까지 화면 사이즈 쟤기
-  var color = '255, 255, 255';
-  var outerAlpha = 0.4;
-  var innerAlpha = 0.4;
-  var innerSize = 8;
-  var outerSize = 8;
-  var outerScale = 1;
-  var innerScale = 1;
-
+/**
+ * Animated Cursor
+ * Replaces the native cursor with a custom animated cursor.
+ *
+ * @author Stephen Scaff
+ */
+function AnimatedCursor({
+  color = '220, 90, 90',
+  outerAlpha = 0.4,
+  innerSize = 8,
+  outerSize = 8,
+  outerScale = 5,
+  innerScale = 0.7
+}) {
   const cursorOuterRef = React.useRef()
   const cursorInnerRef = React.useRef()
   const requestRef = React.useRef()
   const previousTimeRef = React.useRef()
   const [coords, setCoords] = React.useState({ x: 0, y: 0 })
-  const [isValidArea,setIsValidArea] =React.useState(false)
   const [isVisible, setIsVisible] = React.useState(true)
   const [isActive, setIsActive] = React.useState(false)
   const [isActiveClickable, setIsActiveClickable] = React.useState(false)
@@ -89,8 +50,6 @@ const TravelRouteContainer = ({place}) => {
     cursorInnerRef.current.style.left = clientX + 'px'
     endX.current = clientX
     endY.current = clientY
-    console.log("ClientX: "+clientX+"clientY:"+clientY);
-    console.log("width:"+width+"height:"+height);
   }, [])
 
   const animateOuterCursor = React.useCallback(
@@ -124,11 +83,9 @@ const TravelRouteContainer = ({place}) => {
     if (isActive) {
       cursorInnerRef.current.style.transform = `scale(${innerScale})`
       cursorOuterRef.current.style.transform = `scale(${outerScale})`
-      cursorOuterRef.current.style.opacity = 0
     } else {
-      cursorInnerRef.current.style.transform = 'scale(6)'
-      cursorOuterRef.current.style.transform = 'scale(2)'
-      cursorOuterRef.current.style.opacity = 1
+      cursorInnerRef.current.style.transform = 'scale(1)'
+      cursorOuterRef.current.style.transform = 'scale(1)'
     }
   }, [innerScale, outerScale, isActive])
 
@@ -140,15 +97,9 @@ const TravelRouteContainer = ({place}) => {
   }, [innerScale, outerScale, isActiveClickable])
 
   React.useEffect(() => {
-    
-   
     if (isVisible) {
-      if((0<=endX.current)&&(endX.current<=width)&&(0<=endY.current)&&(endY.current<=height)){
-        console.log("endX.current: "+endX.current+"width:"+width);
-        cursorInnerRef.current.style.opacity = 1
-        cursorOuterRef.current.style.opacity = 1
-      }
-
+      cursorInnerRef.current.style.opacity = 1
+      cursorOuterRef.current.style.opacity = 1
     } else {
       cursorInnerRef.current.style.opacity = 0
       cursorOuterRef.current.style.opacity = 0
@@ -203,6 +154,7 @@ const TravelRouteContainer = ({place}) => {
       })
     }
   }, [isActive])
+
   const styles = {
     cursor: {
       zIndex: 999,
@@ -217,31 +169,43 @@ const TravelRouteContainer = ({place}) => {
       width: innerSize,
       height: innerSize,
       pointerEvents: 'none',
-      backgroundColor: `rgba(${color},${innerAlpha})`,
+      backgroundColor: `rgba(${color}, 1)`,
       transition: 'opacity 0.15s ease-in-out, transform 0.25s ease-in-out'
     },
     cursorOuter: {
       position: 'fixed',
-      //borderRadius: '100%',
+      borderRadius: '50%',
       pointerEvents: 'none',
-      width: 0,
-      height: 0,
+      width: outerSize,
+      height: outerSize,
       backgroundColor: `rgba(${color}, ${outerAlpha})`,
-      transition: 'opacity 0.15s ease-in-out, transform 0.15s ease-in-out',
-
+      transition: 'opacity 0.15s ease-in-out, transform 0.15s ease-in-out'
     }
   }
 
-
   return (
-    <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
-      <div ref={cursorOuterRef} style={styles.cursorOuter} >
-        <Typography style={{color:'#ffffff'}} variant="caption">click</Typography> 
-      </div>
+    <React.Fragment>
+      <div ref={cursorOuterRef} style={styles.cursorOuter} />
       <div ref={cursorInnerRef} style={styles.cursorInner} />
-      <TravelRoute place={place}/>
-    </div>
-
+    </React.Fragment>
   )
 }
-export default TravelRouteContainer;
+
+
+function App() {
+  return (
+    <div className="App">
+      <AnimatedCursor/>
+      <section>
+        <h1>Animated Cursor <br/>React Component</h1>
+        <hr/>
+        <p>An animated cursor component made as a <a>Functional Component</a>, using <a>React hooks</a> like <a>useEffect</a> to handle event listeners, local state, an  <a>RequestAnimationFrame</a> management.</p>
+        <p>Hover over these <a>links</a> and see how that animated cursor does it's thing. Kinda nifty, right? Not right for most things, but a nice move for more interactive-type projects. Here's another <a href="">link to nowhere.</a></p>
+        <p>Play with the <a>css variables</a> to influence the cursor, cursor outline size, and amount of scale on target hover. I suppose those could all be <a>props</a> with some. Click in the margin to check click animation.</p>
+      <p>There's probably a better way to manage these kind of events, but this was the best I could come up with. Recently started mucking more with React cause I'm down with the simplicity of Functional Components and Hooks. And if you read the docs, the future ain't class components. So, best get on them functions.</p>
+      </section>
+    </div>
+  );
+}
+ReactDOM.render(<App />, document.getElementById('app'))
+

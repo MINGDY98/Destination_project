@@ -12,12 +12,11 @@ const useStyles = makeStyles ({
   },
 })
 
-const WavesContainer = (canvasRef) => {
+const WavesContainer = () => {
   const canvasContainerRef = React.createRef()
   const classes = useStyles();
   let canvas;
   let ctx;
-  canvasRef = createRef();
   var stageWidth;
   var stageHeight;
   var waveGroup;

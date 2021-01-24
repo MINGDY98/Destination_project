@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles'
-import wave from '../../assets/images/wave.png'
+import wave from '.././assets/images/wave'
 import styled ,{ css,keyframes } from 'styled-components';
 const useStyles = makeStyles ({
   root: {

@@ -13,13 +13,13 @@ const MapStyle =  styled.div`
 
       // All layers are just path elements
       path {
-        fill: rgba(0,0,102, 0.9);
+        fill: rgba(222,222,252, 0.9);
         cursor: pointer;
         outline: none;
 
         // When a layer is hovered
         &:hover {
-          fill: rgba(0,0,102,0.83);
+          fill: rgba(122,122,252,1);
         }
 
         // When a layer is focused.

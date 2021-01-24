@@ -4,7 +4,6 @@ import Footer from './containers/Footer';
 import WavesContainer from './containers/Main/WavesContainer';
 import Main from './pages/Main';
 import TravelRoute from './pages/TravelRoute'
-import PrimaryCoverFlow from './ui/PrimaryCoverFlow'
 function App() {
   return (
     <div>
