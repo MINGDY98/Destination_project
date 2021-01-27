@@ -8,6 +8,8 @@ import KoreaPond from '../../assets/images/korea_pond.jpg'
 
 import TravelRoute from '../../components/TravelRoute';
 
+import { getPlace } from '../../api'
+
 function useEventListener(eventName, handler, element = document) {
   const savedHandler = React.useRef()
 
@@ -30,23 +32,41 @@ function useEventListener(eventName, handler, element = document) {
 }
 
 const TravelRouteContainer = ({place}) => {
-
   const [width,setWidth]= React.useState(window.innerWidth);
   const [height,setHeight]= React.useState(window.innerHeight);
-  const sampleData=[    
-    'url('+KoreaNightView+')',
-    'url('+KoreaPalace+')',
-    'url('+KoreaNamsan+')',
-    'url('+KoreaPond+')'
-  ]
+  const [sampleData, setSampleData] = React.useState([])
+  const [currentRoute, setCurrentRoute] = React.useState(null);
+
   const [index, setIndex]=React.useState(0);
   const [backgroundImage,setBackgroundImage] = React.useState(sampleData[index]);
+
+  useEffect(() => {
+    loadPlace();
+  }, [])
+
+  const loadPlace = async() => {
+    const res = await getPlace(1);
+    if(res != null && res.data.code === 200){
+      setSampleData(res.data.data);
+    }
+  }
+
+  useEffect(() => {
+    if(sampleData.length > 0){
+      setBackgroundImage(`url(${sampleData[index].courseImage})`)
+      setCurrentRoute(sampleData[index])
+    }
+  }, [sampleData])
   
   const updateWidthAndHeight = () => {
     setWidth(window.innerWidth);
     setHeight(window.innerHeight);
   };
   useEffect(() => {
+    if(sampleData.length > 0){
+      setCurrentRoute(sampleData[index])
+    }
+    
     window.addEventListener("resize",updateWidthAndHeight);
     return () => window.removeEventListener("resize", updateWidthAndHeight);
   },[index]);
@@ -84,13 +104,18 @@ const TravelRouteContainer = ({place}) => {
   let endY = React.useRef(0)
 
   const onMouseMove = React.useCallback(({ clientX, clientY }) => {
-    setCoords({ x: clientX, y: clientY })
-    cursorInnerRef.current.style.top = clientY + 'px'
-    cursorInnerRef.current.style.left = clientX + 'px'
-    endX.current = clientX
-    endY.current = clientY
-    console.log("ClientX: "+clientX+"clientY:"+clientY);
-    console.log("width:"+width+"height:"+height);
+    if(cursorInnerRef != null){
+      setCoords({ x: clientX, y: clientY })
+      if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+        cursorInnerRef.current.style.top = clientY + 'px'
+        cursorInnerRef.current.style.left = clientX + 'px'
+        endX.current = clientX
+        endY.current = clientY
+      }
+    }
+    
+    //console.log("ClientX: "+clientX+"clientY:"+clientY);
+    //console.log("width:"+width+"height:"+height);
   }, [])
 
   const animateOuterCursor = React.useCallback(
@@ -98,8 +123,11 @@ const TravelRouteContainer = ({place}) => {
       if (previousTimeRef.current !== undefined) {
         coords.x += (endX.current - coords.x) / 8
         coords.y += (endY.current - coords.y) / 8
-        cursorOuterRef.current.style.top = coords.y + 'px'
-        cursorOuterRef.current.style.left = coords.x + 'px'
+        if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+          cursorOuterRef.current.style.top = coords.y + 'px'
+          cursorOuterRef.current.style.left = coords.x + 'px'
+        }
+        
       }
       previousTimeRef.current = time
       requestRef.current = requestAnimationFrame(animateOuterCursor)
@@ -122,13 +150,17 @@ const TravelRouteContainer = ({place}) => {
 
   React.useEffect(() => {
     if (isActive) {
-      cursorInnerRef.current.style.transform = `scale(${innerScale})`
-      cursorOuterRef.current.style.transform = `scale(${outerScale})`
-      cursorOuterRef.current.style.opacity = 0
+      if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+        cursorInnerRef.current.style.transform = `scale(${innerScale})`
+        cursorOuterRef.current.style.transform = `scale(${outerScale})`
+        cursorOuterRef.current.style.opacity = 0
+      }
     } else {
-      cursorInnerRef.current.style.transform = 'scale(6)'
-      cursorOuterRef.current.style.transform = 'scale(2)'
-      cursorOuterRef.current.style.opacity = 1
+      if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+        cursorInnerRef.current.style.transform = 'scale(6)'
+        cursorOuterRef.current.style.transform = 'scale(2)'
+        cursorOuterRef.current.style.opacity = 1
+      }
     }
   }, [innerScale, outerScale, isActive])
 
@@ -140,18 +172,22 @@ const TravelRouteContainer = ({place}) => {
   }, [innerScale, outerScale, isActiveClickable])
 
   React.useEffect(() => {
-    
-   
     if (isVisible) {
       if((0<=endX.current)&&(endX.current<=width)&&(0<=endY.current)&&(endY.current<=height)){
         console.log("endX.current: "+endX.current+"width:"+width);
-        cursorInnerRef.current.style.opacity = 1
-        cursorOuterRef.current.style.opacity = 1
+        if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+          cursorInnerRef.current.style.opacity = 1
+          cursorOuterRef.current.style.opacity = 1
+        }
+        
       }
 
     } else {
-      cursorInnerRef.current.style.opacity = 0
-      cursorOuterRef.current.style.opacity = 0
+      if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+        cursorInnerRef.current.style.opacity = 0
+        cursorOuterRef.current.style.opacity = 0
+      }
+      
     }
   }, [isVisible])
 
@@ -232,16 +268,20 @@ const TravelRouteContainer = ({place}) => {
     }
   }
 
-
-  return (
-    <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
-      <div ref={cursorOuterRef} style={styles.cursorOuter} >
-        <Typography style={{color:'#ffffff'}} variant="caption">click</Typography> 
+  if(sampleData.length > 0){
+    return (
+      <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
+        <div ref={cursorOuterRef} style={styles.cursorOuter} >
+          <Typography style={{color:'#ffffff'}} variant="caption">click</Typography> 
+        </div>
+        <div ref={cursorInnerRef} style={styles.cursorInner} />
+        <TravelRoute place={currentRoute} />
       </div>
-      <div ref={cursorInnerRef} style={styles.cursorInner} />
-      <TravelRoute place={place}/>
-    </div>
-
-  )
+    )
+  }else{
+    return(
+      <div>loading...</div>
+    )
+  }
 }
 export default TravelRouteContainer;

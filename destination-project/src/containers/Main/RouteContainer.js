@@ -16,10 +16,11 @@ import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 
-const RouteContainer = ({match}) => {
+const RouteContainer = ({ place }) => {
 
   const {place} = match.params
   const data = [123,3123,123123,132312123]
+  //console.log(place)
 
 
   return (
