@@ -5,9 +5,11 @@ import KoreaNightView from '../../assets/images/korea_nightView.jpg'
 import KoreaPalace from '../../assets/images/korea_palace.jpg'
 import KoreaNamsan from '../../assets/images/korea_namsan.jpg'
 import KoreaPond from '../../assets/images/korea_pond.jpg'
-
+import produce from 'immer';
 import TravelRoute from '../../components/TravelRoute';
 
+import { getPlace } from '../../api'
+import { getAttraction } from '../../api';
 function useEventListener(eventName, handler, element = document) {
   const savedHandler = React.useRef()
 
@@ -30,37 +32,121 @@ function useEventListener(eventName, handler, element = document) {
 }
 
 const TravelRouteContainer = ({place}) => {
-
   const [width,setWidth]= React.useState(window.innerWidth);
   const [height,setHeight]= React.useState(window.innerHeight);
-  const sampleData=[    
-    'url('+KoreaNightView+')',
-    'url('+KoreaPalace+')',
-    'url('+KoreaNamsan+')',
-    'url('+KoreaPond+')'
-  ]
-  const [index, setIndex]=React.useState(0);
-  const [backgroundImage,setBackgroundImage] = React.useState(sampleData[index]);
+  const [sampleData, setSampleData] = React.useState([])
+  const [currentRoute, setCurrentRoute] = React.useState(null);
+  //const [backgroundImage,setBackgroundImage] = React.useState(sampleData[index]);
+  const [backgroundImage,setBackgroundImage] = React.useState();
+  const [attractionImageIdx,setAttractionImageIdx]=React.useState([
+    {attraction:null},
+    {attraction:null},
+    {attraction:null},
+    {attraction:null},
+    {attraction:null},
+    {attraction:null},
+  ]);
+  //const [countIdx,setCountIdx]=React.useState(0);//배경화면 setting시 배경화면 관리
+  const [clickIdx,setClickIdx]=React.useState(0);//click시 배경화면관리
+  const [count,setCount]=React.useState(0);
+  const [attractionImage,setAttractionImage]=React.useState([])
+
+  useEffect(() => {
+    loadPlace();
+  }, [])
+
+  const loadPlace = async() => {
+    const res = await getPlace(1);
+    if(res != null && res.data.code === 200){
+      setSampleData(res.data.data);
+    }
+  }
+
+  useEffect(() => {//여기서 이미지 설정하는듯,...
+    if(sampleData.length > 0){
+      setBackgroundImage(`url(${sampleData[0].courseImage})`)
+      console.log(sampleData[0].courseImage)
+      setCurrentRoute(sampleData[0])
+    }
+  }, [sampleData])
+
+
+  useEffect(()=>{
+    loadAttractionImg();
+  },[currentRoute])
+
+
   
   const updateWidthAndHeight = () => {
     setWidth(window.innerWidth);
     setHeight(window.innerHeight);
   };
+
+  const loadAttractionImg = async() => {
+
+    if(currentRoute!=null){
+      console.log(currentRoute)
+      setAttractionImageIdx(
+        produce(attractionImageIdx, draft => {
+          draft[0].attraction=currentRoute.attraction1
+          draft[1].attraction=currentRoute.attraction2
+          draft[2].attraction=currentRoute.attraction3
+          draft[3].attraction=currentRoute.attraction4
+          draft[4].attraction=currentRoute.attraction5
+          draft[5].attraction=currentRoute.attraction6
+        }
+      ))
+    }
+  }
+
+
+  useEffect(()=>{
+
+    attractionImageIdx.forEach((item,idx) =>{
+      if (item.attraction!=null){
+        loadAttraction(item,idx)
+      }
+    })
+
+  },[attractionImageIdx])
+
+  const loadAttraction = async(item,idx) => {
+    const res = await getAttraction( item.attraction  );
+
+    if(res != null && res.data.code === 200){
+      setAttractionImage(array => [...array,res.data.data[0].attractionImage ])
+
+    }
+    
+  }
   useEffect(() => {
+    //if(sampleData.length > 0){
+    //  setCurrentRoute(sampleData[0])
+    //}
+    
     window.addEventListener("resize",updateWidthAndHeight);
     return () => window.removeEventListener("resize", updateWidthAndHeight);
-  },[index]);
+  },[]);
 
   const handleClick=() =>{
-    if(sampleData.length===(index+1)){
-      setBackgroundImage(sampleData[0]);
-      setIndex(0);
-    }
-    else if(sampleData.length>(index+1)){
-      setBackgroundImage(sampleData[index+1]);
-      setIndex(1+index);
-    }
+    console.log("들어옴")
+    console.log(attractionImageIdx)
+    console.log(attractionImage)
 
+    if(attractionImage.length===(clickIdx+1)){
+      setBackgroundImage(`url(${attractionImage[clickIdx]})`);
+      console.log("눌르거다")
+      console.log(attractionImage[clickIdx])
+      setClickIdx(0);
+
+    }
+    else if(attractionImage.length>(clickIdx+1)){
+      setBackgroundImage(`url(${attractionImage[clickIdx]})`);
+      console.log("눌르")
+      console.log(attractionImage[clickIdx])
+      setClickIdx(1+clickIdx);
+
+    }
   }
 //여기까지 화면 사이즈 쟤기
   var color = '255, 255, 255';
@@ -84,13 +170,18 @@ const TravelRouteContainer = ({place}) => {
   let endY = React.useRef(0)
 
   const onMouseMove = React.useCallback(({ clientX, clientY }) => {
-    setCoords({ x: clientX, y: clientY })
-    cursorInnerRef.current.style.top = clientY + 'px'
-    cursorInnerRef.current.style.left = clientX + 'px'
-    endX.current = clientX
-    endY.current = clientY
-    console.log("ClientX: "+clientX+"clientY:"+clientY);
-    console.log("width:"+width+"height:"+height);
+    if(cursorInnerRef != null){
+      setCoords({ x: clientX, y: clientY })
+      if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+        cursorInnerRef.current.style.top = clientY + 'px'
+        cursorInnerRef.current.style.left = clientX + 'px'
+        endX.current = clientX
+        endY.current = clientY
+      }
+    }
+    
+    //console.log("ClientX: "+clientX+"clientY:"+clientY);
+    //console.log("width:"+width+"height:"+height);
   }, [])
 
   const animateOuterCursor = React.useCallback(
@@ -98,8 +189,11 @@ const TravelRouteContainer = ({place}) => {
       if (previousTimeRef.current !== undefined) {
         coords.x += (endX.current - coords.x) / 8
         coords.y += (endY.current - coords.y) / 8
-        cursorOuterRef.current.style.top = coords.y + 'px'
-        cursorOuterRef.current.style.left = coords.x + 'px'
+        if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+          cursorOuterRef.current.style.top = coords.y + 'px'
+          cursorOuterRef.current.style.left = coords.x + 'px'
+        }
+        
       }
       previousTimeRef.current = time
       requestRef.current = requestAnimationFrame(animateOuterCursor)
@@ -122,13 +216,17 @@ const TravelRouteContainer = ({place}) => {
 
   React.useEffect(() => {
     if (isActive) {
-      cursorInnerRef.current.style.transform = `scale(${innerScale})`
-      cursorOuterRef.current.style.transform = `scale(${outerScale})`
-      cursorOuterRef.current.style.opacity = 0
+      if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+        cursorInnerRef.current.style.transform = `scale(${innerScale})`
+        cursorOuterRef.current.style.transform = `scale(${outerScale})`
+        cursorOuterRef.current.style.opacity = 0
+      }
     } else {
-      cursorInnerRef.current.style.transform = 'scale(6)'
-      cursorOuterRef.current.style.transform = 'scale(2)'
-      cursorOuterRef.current.style.opacity = 1
+      if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+        cursorInnerRef.current.style.transform = 'scale(6)'
+        cursorOuterRef.current.style.transform = 'scale(2)'
+        cursorOuterRef.current.style.opacity = 1
+      }
     }
   }, [innerScale, outerScale, isActive])
 
@@ -140,18 +238,22 @@ const TravelRouteContainer = ({place}) => {
   }, [innerScale, outerScale, isActiveClickable])
 
   React.useEffect(() => {
-    
-   
     if (isVisible) {
       if((0<=endX.current)&&(endX.current<=width)&&(0<=endY.current)&&(endY.current<=height)){
         console.log("endX.current: "+endX.current+"width:"+width);
-        cursorInnerRef.current.style.opacity = 1
-        cursorOuterRef.current.style.opacity = 1
+        if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+          cursorInnerRef.current.style.opacity = 1
+          cursorOuterRef.current.style.opacity = 1
+        }
+        
       }
 
     } else {
-      cursorInnerRef.current.style.opacity = 0
-      cursorOuterRef.current.style.opacity = 0
+      if(cursorInnerRef.current != null && cursorOuterRef.current != null){
+        cursorInnerRef.current.style.opacity = 0
+        cursorOuterRef.current.style.opacity = 0
+      }
+      
     }
   }, [isVisible])
 
@@ -232,16 +334,20 @@ const TravelRouteContainer = ({place}) => {
     }
   }
 
-
-  return (
-    <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
-      <div ref={cursorOuterRef} style={styles.cursorOuter} >
-        <Typography style={{color:'#ffffff'}} variant="caption">click</Typography> 
+  if(sampleData.length > 0){
+    return (
+      <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
+        <div ref={cursorOuterRef} style={styles.cursorOuter} >
+          <Typography style={{color:'#ffffff'}} variant="caption">click</Typography> 
+        </div>
+        <div ref={cursorInnerRef} style={styles.cursorInner} />
+        <TravelRoute place={currentRoute} />
       </div>
-      <div ref={cursorInnerRef} style={styles.cursorInner} />
-      <TravelRoute place={place}/>
-    </div>
-
-  )
+    )
+  }else{
+    return(
+      <div>loading...</div>
+    )
+  }
 }
 export default TravelRouteContainer;
