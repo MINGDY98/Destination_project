@@ -48,9 +48,10 @@ const TravelRouteContainer = ({place}) => {
   ]);
   //const [countIdx,setCountIdx]=React.useState(0);//배경화면 setting시 배경화면 관리
   const [clickIdx,setClickIdx]=React.useState(0);//click시 배경화면관리
-  const [count,setCount]=React.useState(0);
+  const [isClick,setIsClick]=React.useState(false);//배경화면 클릭 유무
+  const [nameIdx,setNameIdx]=React.useState(0);//관광지 이름을 위한 state
   const [attractionImage,setAttractionImage]=React.useState([])
-
+  const [attractionName, setAttractionName]=React.useState([])
   useEffect(() => {
     loadPlace();
   }, [])
@@ -115,7 +116,7 @@ const TravelRouteContainer = ({place}) => {
 
     if(res != null && res.data.code === 200){
       setAttractionImage(array => [...array,res.data.data[0].attractionImage ])
-
+      setAttractionName(array => [...array,res.data.data[0].attractionName ])
     }
     
   }
@@ -130,9 +131,9 @@ const TravelRouteContainer = ({place}) => {
 
   const handleClick=() =>{
     console.log("들어옴")
-    console.log(attractionImageIdx)
-    console.log(attractionImage)
 
+    console.log(currentRoute)
+    setIsClick(true)
     if(attractionImage.length===(clickIdx+1)){
       setBackgroundImage(`url(${attractionImage[clickIdx]})`);
       console.log("눌르거다")
@@ -145,9 +146,20 @@ const TravelRouteContainer = ({place}) => {
       console.log("눌르")
       console.log(attractionImage[clickIdx])
       setClickIdx(1+clickIdx);
-
     }
   }
+
+  useEffect(()=>{
+    if(clickIdx===1){
+      setNameIdx(0)
+    }
+    else if(clickIdx===2){
+      setNameIdx(1)
+    }
+    else if(clickIdx===0){
+      setNameIdx(2)
+    }
+  },[clickIdx])
 //여기까지 화면 사이즈 쟤기
   var color = '255, 255, 255';
   var outerAlpha = 0.4;
@@ -341,7 +353,7 @@ const TravelRouteContainer = ({place}) => {
           <Typography style={{color:'#ffffff'}} variant="caption">click</Typography> 
         </div>
         <div ref={cursorInnerRef} style={styles.cursorInner} />
-        <TravelRoute place={currentRoute} />
+        <TravelRoute place={currentRoute} isClick={isClick} nameIdx={nameIdx} attractionName={attractionName} />
       </div>
     )
   }else{
