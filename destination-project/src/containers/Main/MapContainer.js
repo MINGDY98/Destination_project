@@ -1,12 +1,12 @@
 import React from 'react';
 import Map from '../../components/Map'
-import SlickCarousel from '../../ui/SlickCarousel'
+//import SlickCarousel from '../../ui/SlickCarousel'
 import { makeStyles } from '@material-ui/core/styles'
 import { CardActionArea, Container, Grid, Hidden, Typography } from '@material-ui/core'
-import PrimaryModal from '../../ui/PrimaryModal'
-import cloud from '../../assets/images/cloud.jpg'
-import PrimaryCard from '../../ui/PrimaryCard'
-import PrimaryCoverFlow from '../../ui/PrimaryCoverFlow'
+//import PrimaryModal from '../../ui/PrimaryModal'
+//import cloud from '../../assets/images/cloud.jpg'
+//import PrimaryCard from '../../ui/PrimaryCard'
+//import PrimaryCoverFlow from '../../ui/PrimaryCoverFlow'
 const useStyles = makeStyles((theme) => ({
   mapContainer: {
     flexGrow: 1, width:'100%'
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const PlaceName = ({ clicked, width}) => {
+const PlaceName = ({ width,clicked}) => {
   if(!clicked){
     return(
       <div style={{display:'flex', flexDirection:'column', justifyContent:'center', textAlign:'center', height:'100%', borderRadius:6, border:'1px solid #FFF', borderColor:'#FFF'}}>
@@ -47,8 +47,7 @@ const PlaceName = ({ clicked, width}) => {
   }
 }
 
-const MapContainer =({width,height}) =>{
-  const classes = useStyles();
+const MapContainer =() =>{
   const [clicked, setClicked] = React.useState(null);
   const mapRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
@@ -71,7 +70,7 @@ const MapContainer =({width,height}) =>{
     <>
       <Grid item xs={12} md={4}>
         <div style={{width:'100%'}}>
-          <Map clicked={clicked} setClicked={setClicked} />
+          <Map setClicked={setClicked} />
         </div>
       </Grid>
       <Grid item xs={12} md={4}>

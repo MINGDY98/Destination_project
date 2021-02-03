@@ -1,7 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import Footer from './containers/Footer';
-import WavesContainer from './containers/Main/WavesContainer';
 import Main from './pages/Main';
 import TravelRoute from './pages/TravelRoute'
 function App() {

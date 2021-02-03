@@ -1,18 +1,11 @@
 import { Typography } from '@material-ui/core'
 import React, { useEffect } from 'react';
-
-import KoreaNightView from '../../assets/images/korea_nightView.jpg'
-import KoreaPalace from '../../assets/images/korea_palace.jpg'
-import KoreaNamsan from '../../assets/images/korea_namsan.jpg'
-import KoreaPond from '../../assets/images/korea_pond.jpg'
 import produce from 'immer';
 import TravelRoute from '../../components/TravelRoute';
-
 import { getPlace } from '../../api'
 import { getAttraction } from '../../api';
 function useEventListener(eventName, handler, element = document) {
   const savedHandler = React.useRef()
-
   React.useEffect(() => {
     savedHandler.current = handler
   }, [handler])
@@ -34,11 +27,11 @@ function useEventListener(eventName, handler, element = document) {
 const TravelRouteContainer = ({place}) => {
   const [width,setWidth]= React.useState(window.innerWidth);
   const [height,setHeight]= React.useState(window.innerHeight);
-  const [sampleData, setSampleData] = React.useState([])
-  const [currentRoute, setCurrentRoute] = React.useState(null);
-  //const [backgroundImage,setBackgroundImage] = React.useState(sampleData[index]);
-  const [backgroundImage,setBackgroundImage] = React.useState();
-  const [attractionImageIdx,setAttractionImageIdx]=React.useState([
+
+  const [sampleData, setSampleData] = React.useState([])//현재 코스에대한 임시저장
+  const [currentRoute, setCurrentRoute] = React.useState(null);//현재 코스
+  const [backgroundImage,setBackgroundImage] = React.useState();//배경화면
+  const [attractionImageIdx,setAttractionImageIdx]=React.useState([//현재 코스의 attraction들 번호 임시저장
     {attraction:null},
     {attraction:null},
     {attraction:null},
@@ -46,27 +39,26 @@ const TravelRouteContainer = ({place}) => {
     {attraction:null},
     {attraction:null},
   ]);
-  //const [countIdx,setCountIdx]=React.useState(0);//배경화면 setting시 배경화면 관리
   const [clickIdx,setClickIdx]=React.useState(0);//click시 배경화면관리
   const [isClick,setIsClick]=React.useState(false);//배경화면 클릭 유무
   const [nameIdx,setNameIdx]=React.useState(0);//관광지 이름을 위한 state
-  const [attractionImage,setAttractionImage]=React.useState([])
-  const [attractionName, setAttractionName]=React.useState([])
+  const [attractionImage,setAttractionImage]=React.useState([]) //attraction이미지
+  const [attractionName, setAttractionName]=React.useState([]) //attraction이름.
+
   useEffect(() => {
     loadPlace();
   }, [])
 
-  const loadPlace = async() => {
+  const loadPlace = async() => {//course에대한 데이터정보.
     const res = await getPlace(1);
     if(res != null && res.data.code === 200){
       setSampleData(res.data.data);
     }
   }
 
-  useEffect(() => {//여기서 이미지 설정하는듯,...
+  useEffect(() => {//course에대한 이미지 배경화면으로 지정. + 현재 코스에대한 정보 저장.
     if(sampleData.length > 0){
       setBackgroundImage(`url(${sampleData[0].courseImage})`)
-      console.log(sampleData[0].courseImage)
       setCurrentRoute(sampleData[0])
     }
   }, [sampleData])
@@ -76,17 +68,9 @@ const TravelRouteContainer = ({place}) => {
     loadAttractionImg();
   },[currentRoute])
 
-
-  
-  const updateWidthAndHeight = () => {
-    setWidth(window.innerWidth);
-    setHeight(window.innerHeight);
-  };
-
   const loadAttractionImg = async() => {
-
+/**현재 코스의 attraction번호들을 저장 */
     if(currentRoute!=null){
-      console.log(currentRoute)
       setAttractionImageIdx(
         produce(attractionImageIdx, draft => {
           draft[0].attraction=currentRoute.attraction1
@@ -99,68 +83,62 @@ const TravelRouteContainer = ({place}) => {
       ))
     }
   }
-
-
+  
   useEffect(()=>{
 
-    attractionImageIdx.forEach((item,idx) =>{
+    attractionImageIdx.forEach((item) =>{
       if (item.attraction!=null){
-        loadAttraction(item,idx)
+      /**attraction번호에 따른 attraction image와 attraction name 저장. */
+        loadAttraction(item)
       }
     })
-
   },[attractionImageIdx])
 
-  const loadAttraction = async(item,idx) => {
+  const loadAttraction = async(item) => { 
     const res = await getAttraction( item.attraction  );
 
     if(res != null && res.data.code === 200){
       setAttractionImage(array => [...array,res.data.data[0].attractionImage ])
       setAttractionName(array => [...array,res.data.data[0].attractionName ])
     }
-    
   }
+/**화면 resize */
+
+  const updateWidthAndHeight = () => {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+  };
+
   useEffect(() => {
-    //if(sampleData.length > 0){
-    //  setCurrentRoute(sampleData[0])
-    //}
-    
+    if(sampleData.length > 0){
+      setCurrentRoute(sampleData[0])
+    }
     window.addEventListener("resize",updateWidthAndHeight);
     return () => window.removeEventListener("resize", updateWidthAndHeight);
   },[]);
 
   const handleClick=() =>{
-    console.log("들어옴")
-
-    console.log(currentRoute)
+    /**배경화면 클릭시 배경화면 순서대로 전환 */
     setIsClick(true)
     if(attractionImage.length===(clickIdx+1)){
       setBackgroundImage(`url(${attractionImage[clickIdx]})`);
-      console.log("눌르거다")
-      console.log(attractionImage[clickIdx])
       setClickIdx(0);
-
     }
     else if(attractionImage.length>(clickIdx+1)){
       setBackgroundImage(`url(${attractionImage[clickIdx]})`);
-      console.log("눌르")
-      console.log(attractionImage[clickIdx])
       setClickIdx(1+clickIdx);
     }
   }
 
-  useEffect(()=>{
-    if(clickIdx===1){
-      setNameIdx(0)
+  useEffect(()=>{//attraction번호 조정
+    if(clickIdx===0){
+      setNameIdx(attractionImage.length-1)
     }
-    else if(clickIdx===2){
-      setNameIdx(1)
-    }
-    else if(clickIdx===0){
-      setNameIdx(2)
+    else{
+      setNameIdx(clickIdx-1)
     }
   },[clickIdx])
-//여기까지 화면 사이즈 쟤기
+
   var color = '255, 255, 255';
   var outerAlpha = 0.4;
   var innerAlpha = 0.4;
@@ -191,9 +169,7 @@ const TravelRouteContainer = ({place}) => {
         endY.current = clientY
       }
     }
-    
-    //console.log("ClientX: "+clientX+"clientY:"+clientY);
-    //console.log("width:"+width+"height:"+height);
+
   }, [])
 
   const animateOuterCursor = React.useCallback(

@@ -1,6 +1,6 @@
 import React, { createRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles'
-import {WaveGroup} from '../../canvas/WaveGroup.js'
+import {WaveGroup} from './canvas/WaveGroup.js'
 import { Button } from '@material-ui/core';
 const useStyles = makeStyles ({
   root: {

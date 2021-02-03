@@ -40,7 +40,7 @@ const Attraction = ({ attractionId }) => {
 
 const TravelRoute = ({ place, isClick, nameIdx,attractionName }) => {
   const [data, setData] = React.useState(null)
-  const [courseName,setCourseName]=React.useState('안녕')
+  const [courseName,setCourseName]=React.useState(null)
   React.useEffect(() => {
     
     if(place != null){
