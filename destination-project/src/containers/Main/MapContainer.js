@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ useEffect }from 'react';
 import Map from '../../components/Map'
 //import SlickCarousel from '../../ui/SlickCarousel'
 import { makeStyles } from '@material-ui/core/styles'
@@ -32,12 +32,17 @@ const PlaceName = ({ width,clicked}) => {
       </div>
     )
   }else{
+
+    const handleClickArea = (clicked) => {
+      window.location.href=`/routes/${clicked}`
+    }
+
     return(
       <div style={{display:'flex', flexDirection:'column', justifyContent:'center', textAlign:'center', height:'100%', borderRadius:6, border:'1px solid #FFF', borderColor:'#FFF'}}>
         <Container>
-          <CardActionArea onClick={()=>window.location.href="/routes"}>
+          <CardActionArea onClick={()=>handleClickArea(clicked)}>
             <Typography style={{color:'#FFF', cursor:'pointer'}}>
-              해당 UI는 프로토타입입니다. 이 텍스트 클릭시 미리 작성된 여행경로 추천 페이지로 이동합니다.
+              {clicked}
             </Typography>
           </CardActionArea>
         </Container>

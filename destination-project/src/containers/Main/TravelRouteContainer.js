@@ -50,7 +50,10 @@ const TravelRouteContainer = ({place}) => {
   }, [])
 
   const loadPlace = async() => {//course에대한 데이터정보.
-    const res = await getPlace(1);
+    const res = await getPlace(place);//여기로 지역을 정함.
+    console.log("한번본다")
+    console.log(place)
+    
     if(res != null && res.data.code === 200){
       setSampleData(res.data.data);
     }
@@ -59,7 +62,7 @@ const TravelRouteContainer = ({place}) => {
   useEffect(() => {//course에대한 이미지 배경화면으로 지정. + 현재 코스에대한 정보 저장.
     if(sampleData.length > 0){
       setBackgroundImage(`url(${sampleData[0].courseImage})`)
-      setCurrentRoute(sampleData[0])
+      setCurrentRoute(sampleData[0])//course가 여러개 일경우 임시로 이렇게 해놈.
     }
   }, [sampleData])
 

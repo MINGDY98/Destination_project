@@ -18,6 +18,8 @@ const Attraction = ({ attractionId }) => {
   const loadAttraction = async() => {
     const res = await getAttraction( attractionId );
     if(res != null && res.data.code === 200){
+      console.log("loadattraction결과는")
+      console.log(res.data)
       setData(res.data.data[0]);
     }
   }
@@ -39,11 +41,13 @@ const Attraction = ({ attractionId }) => {
 
 
 const TravelRoute = ({ place, isClick, nameIdx,attractionName }) => {
-  const [data, setData] = React.useState(null)
-  const [courseName,setCourseName]=React.useState(null)
+  const [data, setData] = React.useState(null)//attraction이름.
+  const [courseName,setCourseName]=React.useState(null)//course이름
   React.useEffect(() => {
     
     if(place != null){
+      console.log("place이름은")
+      console.log(place)
       setCourseName(place.courseName)
       setData([
         place.attraction1,
@@ -75,6 +79,7 @@ const TravelRoute = ({ place, isClick, nameIdx,attractionName }) => {
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent style={{paddingBottom:60}}>
+                    {/**attraction을 하나씩 보냄. */}
                     <Attraction attractionId={item} />
                   </TimelineContent>
                 </TimelineItem>

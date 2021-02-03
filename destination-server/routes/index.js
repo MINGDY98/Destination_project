@@ -16,7 +16,7 @@ router.get('/place/:place', async function(req, res) {
       FROM Course
       LEFT JOIN Area
       ON Course.area = Area.areaId
-      WHERE areaId = ?
+      WHERE classification = ?
     `
     const result = await mysql.execute(sql, [
       place
@@ -47,6 +47,7 @@ router.get('/course/:course', async function(req, res) {
 
 router.get('/attraction/:attraction', async function(req, res) {
   const { attraction } = req.params;
+  
   try{
     const sql = `
       SELECT * 
