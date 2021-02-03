@@ -2,11 +2,13 @@ import React ,{ useEffect }from 'react';
 import Map from '../../components/Map'
 //import SlickCarousel from '../../ui/SlickCarousel'
 import { makeStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button';
 import { CardActionArea, Container, Grid, Hidden, Typography } from '@material-ui/core'
 //import PrimaryModal from '../../ui/PrimaryModal'
 //import cloud from '../../assets/images/cloud.jpg'
 //import PrimaryCard from '../../ui/PrimaryCard'
 //import PrimaryCoverFlow from '../../ui/PrimaryCoverFlow'
+import { getPlaceName } from '../../api'
 const useStyles = makeStyles((theme) => ({
   mapContainer: {
     flexGrow: 1, width:'100%'
@@ -23,6 +25,27 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const PlaceName = ({ width,clicked}) => {
+
+  const [placeName, setPlaceName] = React.useState([]);
+
+  useEffect(()=>{
+    if(clicked){
+      setPlaceName([])
+      loadPlaceName();
+    }
+  },[clicked])
+
+  const loadPlaceName = async() => {//course에대한 데이터정보.
+    const res = await getPlaceName(clicked);//여기로 지역을 정함.
+
+
+    if(res != null && res.data.code === 200){
+      for(let i =0; i< res.data.data.length;i++){
+        setPlaceName(array=>[...array,res.data.data[i].areaName])
+      }
+    }
+  }
+
   if(!clicked){
     return(
       <div style={{display:'flex', flexDirection:'column', justifyContent:'center', textAlign:'center', height:'100%', borderRadius:6, border:'1px solid #FFF', borderColor:'#FFF'}}>
@@ -33,18 +56,20 @@ const PlaceName = ({ width,clicked}) => {
     )
   }else{
 
-    const handleClickArea = (clicked) => {
-      window.location.href=`/routes/${clicked}`
+    const handleClickArea = (item) => {
+      window.location.href=`/routes/${item}`
     }
 
     return(
       <div style={{display:'flex', flexDirection:'column', justifyContent:'center', textAlign:'center', height:'100%', borderRadius:6, border:'1px solid #FFF', borderColor:'#FFF'}}>
         <Container>
-          <CardActionArea onClick={()=>handleClickArea(clicked)}>
-            <Typography style={{color:'#FFF', cursor:'pointer'}}>
-              {clicked}
-            </Typography>
-          </CardActionArea>
+            {placeName.map((item, idx) => {
+              return(            
+              <Button style={{color:'#FFF', cursor:'pointer'}} onClick={()=>handleClickArea(item)}>
+                {item}
+              </Button>
+              )
+            })}
         </Container>
       </div>
 

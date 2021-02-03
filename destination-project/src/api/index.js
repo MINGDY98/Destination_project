@@ -24,3 +24,15 @@ export const getAttraction = async( attractionId ) => {
     return null
   })
 }
+
+export const getPlaceName = async( classification ) => {
+  return await axios.get(`/classification/${classification}`)
+  .then(res => {
+    //console.log(res)
+    return res
+  })
+  .catch(e => {
+    console.log(e)
+    return null
+  })
+}

@@ -16,7 +16,7 @@ router.get('/place/:place', async function(req, res) {
       FROM Course
       LEFT JOIN Area
       ON Course.area = Area.areaId
-      WHERE classification = ?
+      WHERE areaName = ?
     `
     const result = await mysql.execute(sql, [
       place
@@ -56,6 +56,24 @@ router.get('/attraction/:attraction', async function(req, res) {
     `
     const result = await mysql.execute(sql, [
       attraction
+    ])
+    res.status(200).json({ code: 200, result: "success", data: result[0] });
+  }catch(e){
+    res.status(200).json({ code: 500, result: "error", message: e.message });
+  }
+})
+
+router.get('/classification/:classification', async function(req, res) {
+  const { classification } = req.params;
+  
+  try{
+    const sql = `
+      SELECT areaName 
+      FROM front.Area 
+      WHERE classification=?
+    `
+    const result = await mysql.execute(sql, [
+      classification
     ])
     res.status(200).json({ code: 200, result: "success", data: result[0] });
   }catch(e){

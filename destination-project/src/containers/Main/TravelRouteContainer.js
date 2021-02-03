@@ -55,6 +55,7 @@ const TravelRouteContainer = ({place}) => {
     console.log(place)
     
     if(res != null && res.data.code === 200){
+      console.log(res.data.data)
       setSampleData(res.data.data);
     }
   }
