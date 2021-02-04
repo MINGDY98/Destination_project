@@ -30,7 +30,7 @@ export default function PrimaryCard({place}){
               <Typography variant="h6" ><strong>청계천</strong></Typography>
               <Typography variant="caption" style={{paddingBottom:5}}><strong>{place}</strong></Typography>
               <Divider/>
-              <Typography variant="body2" style={{paddingTop:5}}>나는 한승우를 사랑합니다 안녕하세요 안녕하세요 안녕ㅎ안녕안녕안녕안녕~~~</Typography>
+              <Typography variant="body2" style={{paddingTop:5}}>나는 안녕하세요.</Typography>
             </div>
             
           </div>

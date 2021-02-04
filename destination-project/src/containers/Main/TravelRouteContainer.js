@@ -4,6 +4,8 @@ import produce from 'immer';
 import TravelRoute from '../../components/TravelRoute';
 import { getPlace } from '../../api'
 import { getAttraction } from '../../api';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 function useEventListener(eventName, handler, element = document) {
   const savedHandler = React.useRef()
   React.useEffect(() => {
@@ -40,6 +42,7 @@ const TravelRouteContainer = ({place}) => {
     {attraction:null},
   ]);
   const [clickIdx,setClickIdx]=React.useState(0);//click시 배경화면관리
+  const [clickNum,setClickNum]=React.useState();//click시 배경화면관리를 위한 진짜 id
   const [isClick,setIsClick]=React.useState(false);//배경화면 클릭 유무
   const [nameIdx,setNameIdx]=React.useState(0);//관광지 이름을 위한 state
   const [attractionImage,setAttractionImage]=React.useState([]) //attraction이미지
@@ -62,18 +65,30 @@ const TravelRouteContainer = ({place}) => {
 
   useEffect(() => {//course에대한 이미지 배경화면으로 지정. + 현재 코스에대한 정보 저장.
     if(sampleData.length > 0){
-      setBackgroundImage(`url(${sampleData[0].courseImage})`)
-      setCurrentRoute(sampleData[0])//course가 여러개 일경우 임시로 이렇게 해놈.
+      setBackgroundImage(`url(${sampleData[0].courseImage})`)//course가 여러개 일경우 0번 코스먼저 보이게끔
+      setCurrentRoute(sampleData[0])//course가 여러개 일경우 0번 코스먼저 보이게끔
     }
   }, [sampleData])
 
 
   useEffect(()=>{
+    //if(attractionImage[0]!=null){
+    //  setBackgroundImage(`url(${attractionImage[0].image})`)//코스바꿀때만 동작하게끔.
+    //  console.log("허거걱")
+    //}
     loadAttractionImg();
   },[currentRoute])
 
   const loadAttractionImg = async() => {
 /**현재 코스의 attraction번호들을 저장 */
+    setAttractionImageIdx([//일단 초기화.
+      {attraction:null},
+      {attraction:null},
+      {attraction:null},
+      {attraction:null},
+      {attraction:null},
+      {attraction:null},
+    ]);
     if(currentRoute!=null){
       setAttractionImageIdx(
         produce(attractionImageIdx, draft => {
@@ -89,21 +104,34 @@ const TravelRouteContainer = ({place}) => {
   }
   
   useEffect(()=>{
+    if(currentRoute!=null){
+      console.log("attraction어케되냐 제발ㄹ중간점검")
+      console.log(attractionImageIdx)
+      setAttractionImage([])
+      setAttractionName([])
+      setAttractionImage(array => [...array,{id:0,image:currentRoute.courseImage}])//새 코스가 선택되었을시 초기화(코스 이미지 맨 처음추가.)
+      setAttractionName(array => [...array,{id:0,name:currentRoute.courseName}])//새 코스가 선택되었을시 초기화(코스 이름 맨 처음추가.)
 
-    attractionImageIdx.forEach((item) =>{
-      if (item.attraction!=null){
-      /**attraction번호에 따른 attraction image와 attraction name 저장. */
-        loadAttraction(item)
-      }
-    })
+      attractionImageIdx.forEach((item,idx) =>{
+        if (item.attraction!=null){
+        /**attraction번호에 따른 attraction image와 attraction name 저장. */
+          loadAttraction(item,idx)
+        }
+      })
+    }
   },[attractionImageIdx])
 
-  const loadAttraction = async(item) => { 
-    const res = await getAttraction( item.attraction  );
+  useEffect(()=>{
 
+    console.log("이름은")
+    console.log(attractionName)
+
+  },[attractionName])
+  const loadAttraction = async(item,idx) => { 
+    const res = await getAttraction( item.attraction  );
     if(res != null && res.data.code === 200){
-      setAttractionImage(array => [...array,res.data.data[0].attractionImage ])
-      setAttractionName(array => [...array,res.data.data[0].attractionName ])
+      setAttractionImage(array => [...array,{id:idx+1,image:res.data.data[0].attractionImage} ])
+      setAttractionName(array => [...array,{id:idx+1,name:res.data.data[0].attractionName} ])
     }
   }
 /**화면 resize */
@@ -114,26 +142,50 @@ const TravelRouteContainer = ({place}) => {
   };
 
   useEffect(() => {
-    if(sampleData.length > 0){
-      setCurrentRoute(sampleData[0])
-    }
+    //if(sampleData.length > 0){
+      //setCurrentRoute(sampleData[0])
+    //}
     window.addEventListener("resize",updateWidthAndHeight);
     return () => window.removeEventListener("resize", updateWidthAndHeight);
   },[]);
 
+  useEffect(() => {
+    if(attractionImage[clickIdx]!=null){
+      console.log("동기화를위해")
+      setBackgroundImage(`url(${attractionImage[clickIdx].image})`)
+    }
+    
+  },[clickIdx]);
+
+  useEffect(() => {
+    console.log("동기화를위해1")
+    if(clickNum!=null){
+      const index = attractionImage.findIndex(item => item.id===clickNum);
+      setClickIdx(index)
+    }
+  },[clickNum]);
   const handleClick=() =>{
-    /**배경화면 클릭시 배경화면 순서대로 전환 */
-    setIsClick(true)
-    if(attractionImage.length===(clickIdx+1)){
-      setBackgroundImage(`url(${attractionImage[clickIdx]})`);
-      setClickIdx(0);
+    //배경화면 클릭시 배경화면 순서대로 전환
+    console.log("handleClick")
+    if(isClick===false){
+      setIsClick(true)
+      console.log("오잉")
+      setClickNum(1)
     }
-    else if(attractionImage.length>(clickIdx+1)){
-      setBackgroundImage(`url(${attractionImage[clickIdx]})`);
-      setClickIdx(1+clickIdx);
+    else{
+      if(attractionImage.length===(clickNum+1)){
+        console.log("같다")
+        setClickNum(0)
+      }
+      else if(attractionImage.length>(clickNum+1)){
+        console.log("작다")
+        setClickNum(1+clickNum)
+      }
     }
+
   }
 
+  /*
   useEffect(()=>{//attraction번호 조정
     if(clickIdx===0){
       setNameIdx(attractionImage.length-1)
@@ -141,8 +193,8 @@ const TravelRouteContainer = ({place}) => {
     else{
       setNameIdx(clickIdx-1)
     }
-  },[clickIdx])
-
+  },[clickIdx]) 
+*/
   var color = '255, 255, 255';
   var outerAlpha = 0.4;
   var innerAlpha = 0.4;
@@ -326,14 +378,36 @@ const TravelRouteContainer = ({place}) => {
     }
   }
 
+  const handleClickCourse = (item) => {
+
+    //setBackgroundImage(`url(${attractionImage[0].image})`)
+    setCurrentRoute(item)
+    setClickNum(0)
+  }
+
   if(sampleData.length > 0){
     return (
+      <div style={{display:'flex'}}>
+      <div style={{position:'absolute', left:50, top:50}}>
+        <Paper style={{width:200,height:100,opacity: 0.5}}>
+          {sampleData.map((item, idx) => {
+            if(item != null){
+              return(
+                <Button onClick={()=>handleClickCourse(item)}>
+                {item.courseName}
+                </Button>
+              )
+            }
+          })}    
+        </Paper>
+      </div>
       <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
         <div ref={cursorOuterRef} style={styles.cursorOuter} >
           <Typography style={{color:'#ffffff'}} variant="caption">click</Typography> 
         </div>
         <div ref={cursorInnerRef} style={styles.cursorInner} />
-        <TravelRoute place={currentRoute} isClick={isClick} nameIdx={nameIdx} attractionName={attractionName} />
+        <TravelRoute place={currentRoute} isClick={isClick} clickNum={clickNum} attractionName={attractionName} />
+      </div>
       </div>
     )
   }else{
