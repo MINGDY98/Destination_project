@@ -54,12 +54,13 @@ const TravelRouteContainer = ({place}) => {
 
   const loadPlace = async() => {//course에대한 데이터정보.
     const res = await getPlace(place);//여기로 지역을 정함.ex 경주
-    //console.log("한번본다")
+    console.log("한번본다")
     //console.log(place)
     
     if(res != null && res.data.code === 200){
-      //console.log(res.data.data)
-      setSampleData(res.data.data);
+      //console.log(res.data.data)0: {courseId: 0, courseName: "차분히 유적지 감상이 하고 싶다면", courseImage: "https://ifh.cc/g/7ftWYB.jpg", area: "2", attraction1: "4", …}
+      //1: {courseId: 1, courseName: "테마파크와 유적지
+      setSampleData(res.data.data);//
     }
   }
 
