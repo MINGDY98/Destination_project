@@ -32,7 +32,7 @@ const TravelRouteContainer = ({place}) => {
 
   const [sampleData, setSampleData] = React.useState([])//현재 코스에대한 임시저장
   const [currentRoute, setCurrentRoute] = React.useState(null);//현재 코스
-  const [backgroundImage,setBackgroundImage] = React.useState();//배경화면
+  const [backgroundImage,setBackgroundImage] = React.useState(123);//배경화면
   const [attractionImageIdx,setAttractionImageIdx]=React.useState([//현재 코스의 attraction들 번호 임시저장
     {attraction:null},
     {attraction:null},
@@ -387,8 +387,10 @@ const TravelRouteContainer = ({place}) => {
   
   useEffect(() => {
     if(course!=null){
+      console.log("anlkaldnladskldanlkdasnkldsalnk")
       console.log(course.courseImage)
-      setBackgroundImage(course.courseImage)
+      setBackgroundImage(`url(${course.courseImage})`) //바보 이렇게 해줘야지
+      
       setClickNum(0)
       setCurrentRoute(course)
     }
@@ -405,11 +407,11 @@ const TravelRouteContainer = ({place}) => {
     return (
       <div style={{display:'flex'}}>
       <div style={{position:'absolute', left:50, top:50}}>
-        <Paper style={{width:200,height:100,opacity: 0.5}}>
+        <Paper style={{minWidth:200,minHeight:100,opacity: 0.5}}>
           {sampleData.map((item, idx) => {
             if(item != null){
               return(
-                <Button onClick={()=>handleClickCourse(item)}>
+                <Button fullWidth onClick={()=>handleClickCourse(item)}>
                 {item.courseName}
                 </Button>
               )
