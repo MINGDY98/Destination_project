@@ -37,6 +37,7 @@ const PlaceName = ({ width,clicked}) => {
 
   const loadPlaceName = async() => {//course에대한 데이터정보.
     const res = await getPlaceName(clicked);//여기로 지역을 정함.
+    console.log(res)
 
 
     if(res != null && res.data.code === 200){

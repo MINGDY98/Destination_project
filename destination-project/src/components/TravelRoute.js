@@ -65,7 +65,7 @@ const TravelRoute = ({ place, isClick, clickNum,attractionName }) => {
     <>
       <div style={{flexGrow:4,flexBasis:0,display:'flex',alignItems:'center'}}>
         <div style={{position:'absolute', left:50, bottom:100}}>
-          <Typography style={{color:"#ffffff"}} variant="h1">{isClick===true ? attractionName[index].name: courseName}</Typography>
+          <Typography style={{color:"#ffffff"}} variant="h1">{isClick===true&&(attractionName[index]!=null) ? attractionName[index].name: courseName}</Typography>
         </div>
       </div>
       <div style={{flexGrow:1,flexBasis:0,display:'flex',alignItems:'center',backgroundColor:'rgba(0, 0, 0, 0.5)'}}>
