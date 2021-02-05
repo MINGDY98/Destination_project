@@ -47,18 +47,18 @@ const TravelRouteContainer = ({place}) => {
   const [nameIdx,setNameIdx]=React.useState(0);//관광지 이름을 위한 state
   const [attractionImage,setAttractionImage]=React.useState([]) //attraction이미지
   const [attractionName, setAttractionName]=React.useState([]) //attraction이름.
-
+  const [course,setCourse]=React.useState();//코스 선택.
   useEffect(() => {
     loadPlace();
   }, [])
 
   const loadPlace = async() => {//course에대한 데이터정보.
-    const res = await getPlace(place);//여기로 지역을 정함.
-    console.log("한번본다")
-    console.log(place)
+    const res = await getPlace(place);//여기로 지역을 정함.ex 경주
+    //console.log("한번본다")
+    //console.log(place)
     
     if(res != null && res.data.code === 200){
-      console.log(res.data.data)
+      //console.log(res.data.data)
       setSampleData(res.data.data);
     }
   }
@@ -105,8 +105,8 @@ const TravelRouteContainer = ({place}) => {
   
   useEffect(()=>{
     if(currentRoute!=null){
-      console.log("attraction어케되냐 제발ㄹ중간점검")
-      console.log(attractionImageIdx)
+      //console.log("attraction어케되냐 제발ㄹ중간점검")
+      //console.log(attractionImageIdx)
       setAttractionImage([])
       setAttractionName([])
       setAttractionImage(array => [...array,{id:0,image:currentRoute.courseImage}])//새 코스가 선택되었을시 초기화(코스 이미지 맨 처음추가.)
@@ -123,8 +123,8 @@ const TravelRouteContainer = ({place}) => {
 
   useEffect(()=>{
 
-    console.log("이름은")
-    console.log(attractionName)
+    //console.log("이름은")
+    //console.log(attractionName)
 
   },[attractionName])
   const loadAttraction = async(item,idx) => { 
@@ -151,7 +151,7 @@ const TravelRouteContainer = ({place}) => {
 
   useEffect(() => {
     if(attractionImage[clickIdx]!=null){
-      console.log("동기화를위해")
+      console.log("동기화를위해2")//그럼 그 인덱스로 이미지를 찾아내서 배경화면 바꿈.
       setBackgroundImage(`url(${attractionImage[clickIdx].image})`)
     }
     
@@ -160,25 +160,25 @@ const TravelRouteContainer = ({place}) => {
   useEffect(() => {
     console.log("동기화를위해1")
     if(clickNum!=null){
-      const index = attractionImage.findIndex(item => item.id===clickNum);
+      const index = attractionImage.findIndex(item => item.id===clickNum);//원하는 id가 바뀔경우 원하는 id를 찾아 그 인덱스를 가져오게함
       setClickIdx(index)
     }
   },[clickNum]);
   const handleClick=() =>{
     //배경화면 클릭시 배경화면 순서대로 전환
-    console.log("handleClick")
+    //console.log("handleClick")
     if(isClick===false){
       setIsClick(true)
-      console.log("오잉")
+      //console.log("오잉")
       setClickNum(1)
     }
     else{
       if(attractionImage.length===(clickNum+1)){
-        console.log("같다")
+        //console.log("같다")
         setClickNum(0)
       }
       else if(attractionImage.length>(clickNum+1)){
-        console.log("작다")
+        //console.log("작다")
         setClickNum(1+clickNum)
       }
     }
@@ -284,7 +284,7 @@ const TravelRouteContainer = ({place}) => {
   React.useEffect(() => {
     if (isVisible) {
       if((0<=endX.current)&&(endX.current<=width)&&(0<=endY.current)&&(endY.current<=height)){
-        console.log("endX.current: "+endX.current+"width:"+width);
+        //console.log("endX.current: "+endX.current+"width:"+width);
         if(cursorInnerRef.current != null && cursorOuterRef.current != null){
           cursorInnerRef.current.style.opacity = 1
           cursorOuterRef.current.style.opacity = 1
@@ -377,12 +377,27 @@ const TravelRouteContainer = ({place}) => {
 
     }
   }
+  useEffect(() => {
+    //if(course!=null){
+    //  setClickNum(0)
+    //  setCurrentRoute(course)
+    //}
+  },[backgroundImage]);
+  
+  useEffect(() => {
+    if(course!=null){
+      console.log(course.courseImage)
+      setBackgroundImage(course.courseImage)
+      setClickNum(0)
+      setCurrentRoute(course)
+    }
+
+  },[course]);
 
   const handleClickCourse = (item) => {
-
+    console.log("시작")
     //setBackgroundImage(`url(${attractionImage[0].image})`)
-    setCurrentRoute(item)
-    setClickNum(0)
+    setCourse(item)
   }
 
   if(sampleData.length > 0){
