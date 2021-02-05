@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import { Typography } from '@material-ui/core'
 import React from 'react';
-import TravelRouteContainer from '../containers/Main/TravelRouteContainer.js'
+import TravelRouteContainer from '../../containers/Main/TravelRouteContainer.js'
 
 const TravelRoute = ({match}) => {
 
