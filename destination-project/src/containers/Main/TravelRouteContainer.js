@@ -28,7 +28,17 @@ const TravelRouteContainer = ({place}) => {
   const [isClick,setIsClick]=React.useState(false);//배경화면 클릭 유무
   const [attractionImage,setAttractionImage]=React.useState([]) //attraction이미지
   const [attractionName, setAttractionName]=React.useState([]) //attraction이름.
-  const [course,setCourse]=React.useState();//코스 선택.
+  /**화면 resize */
+  const updateWidthAndHeight = () => {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize",updateWidthAndHeight);
+    return () => window.removeEventListener("resize", updateWidthAndHeight);
+  },[]);
+/**전달 받은 place에 따른 정보 설정 시작 */
   useEffect(() => {
     loadPlace();
   }, [])
@@ -36,10 +46,10 @@ const TravelRouteContainer = ({place}) => {
   const loadPlace = async() => {//course에대한 데이터정보.
     const res = await getPlace(place);//여기로 지역을 정함.ex 경주
     console.log("한번본다")
-    //console.log(place)
     
     if(res != null && res.data.code === 200){
-      //console.log(res.data.data)0: {courseId: 0, courseName: "차분히 유적지 감상이 하고 싶다면", courseImage: "https://ifh.cc/g/7ftWYB.jpg", area: "2", attraction1: "4", …}
+      //console.log(res.data.data)
+      //0: {courseId: 0, courseName: "차분히 유적지 감상이 하고 싶다면", courseImage: "https://ifh.cc/g/7ftWYB.jpg", area: "2", attraction1: "4", …}
       //1: {courseId: 1, courseName: "테마파크와 유적지
       setSampleData(res.data.data);//
     }
@@ -52,12 +62,7 @@ const TravelRouteContainer = ({place}) => {
     }
   }, [sampleData])
 
-
-  useEffect(()=>{
-    //if(attractionImage[0]!=null){
-    //  setBackgroundImage(`url(${attractionImage[0].image})`)//코스바꿀때만 동작하게끔.
-    //  console.log("허거걱")
-    //}
+  useEffect(()=>{/**코스 선택시 */
     loadAttractionImg();
   },[currentRoute])
 
@@ -87,12 +92,11 @@ const TravelRouteContainer = ({place}) => {
   
   useEffect(()=>{
     if(currentRoute!=null){
-      //console.log("attraction어케되냐 제발ㄹ중간점검")
-      //console.log(attractionImageIdx)
+      /**새 코스가 선택되었을시 초기화(코스 이미지, 코스 이름 각각 추가) */
       setAttractionImage([])
       setAttractionName([])
-      setAttractionImage(array => [...array,{id:0,image:currentRoute.courseImage}])//새 코스가 선택되었을시 초기화(코스 이미지 맨 처음추가.)
-      setAttractionName(array => [...array,{id:0,name:currentRoute.courseName}])//새 코스가 선택되었을시 초기화(코스 이름 맨 처음추가.)
+      setAttractionImage(array => [...array,{id:0,image:currentRoute.courseImage}])
+      setAttractionName(array => [...array,{id:0,name:currentRoute.courseName}])
 
       attractionImageIdx.forEach((item,idx) =>{
         if (item.attraction!=null){
@@ -103,12 +107,6 @@ const TravelRouteContainer = ({place}) => {
     }
   },[attractionImageIdx])
 
-  useEffect(()=>{
-
-    //console.log("이름은")
-    //console.log(attractionName)
-
-  },[attractionName])
   const loadAttraction = async(item,idx) => { 
     const res = await getAttraction( item.attraction  );
     if(res != null && res.data.code === 200){
@@ -116,101 +114,63 @@ const TravelRouteContainer = ({place}) => {
       setAttractionName(array => [...array,{id:idx+1,name:res.data.data[0].attractionName} ])
     }
   }
-/**화면 resize */
-
-  const updateWidthAndHeight = () => {
-    setWidth(window.innerWidth);
-    setHeight(window.innerHeight);
-  };
-
-  useEffect(() => {
-    //if(sampleData.length > 0){
-      //setCurrentRoute(sampleData[0])
-    //}
-    window.addEventListener("resize",updateWidthAndHeight);
-    return () => window.removeEventListener("resize", updateWidthAndHeight);
-  },[]);
 
   useEffect(() => {
     if(attractionImage[clickIdx]!=null){
-      console.log("동기화를위해2")//그럼 그 인덱스로 이미지를 찾아내서 배경화면 바꿈.
       setBackgroundImage(`url(${attractionImage[clickIdx].image})`)
     }
     
-  },[clickIdx]);
+  },[clickIdx,attractionImage]);
 
   useEffect(() => {
-    console.log("동기화를위해1")
     if(clickNum!=null){
       const index = attractionImage.findIndex(item => item.id===clickNum);//원하는 id가 바뀔경우 원하는 id를 찾아 그 인덱스를 가져오게함
       setClickIdx(index)
     }
   },[clickNum]);
+
   const handleClick=() =>{
-    //배경화면 클릭시 배경화면 순서대로 전환
-    //console.log("handleClick")
+    /**배경화면 클릭시 배경화면 순서대로 전환*/
     if(isClick===false){
       setIsClick(true)
-      //console.log("오잉")
       setClickNum(1)
     }
     else{
       if(attractionImage.length===(clickNum+1)){
-        //console.log("같다")
         setClickNum(0)
       }
       else if(attractionImage.length>(clickNum+1)){
-        //console.log("작다")
         setClickNum(1+clickNum)
       }
     }
-
   }
   
-  useEffect(() => {
-    //if(course!=null){
-    //  setClickNum(0)
-    //  setCurrentRoute(course)
-    //}
-  },[backgroundImage]);
-  
-  useEffect(() => {
-    if(course!=null){
-      console.log("anlkaldnladskldanlkdasnkldsalnk")
-      console.log(course.courseImage)
-      setBackgroundImage(`url(${course.courseImage})`) //바보 이렇게 해줘야지
-      
-      setClickNum(0)
-      setCurrentRoute(course)
-    }
-
-  },[course]);
-
   const handleClickCourse = (item) => {
-    console.log("시작")
-    setCourse(item)
+    setCurrentRoute(item)
+    setBackgroundImage(`url(${item.courseImage})`)
+    setClickNum(0)
   }
 
   if(sampleData.length > 0){
     return (
       <div style={{display:'flex'}}>
-      <div style={{position:'absolute', left:50, top:50}}>
-        <Paper style={{minWidth:200,minHeight:100,opacity: 0.5}}>
-          {sampleData.map((item, idx) => {
-            if(item != null){
-              return(
-                <Button fullWidth onClick={()=>handleClickCourse(item)}>
-                {item.courseName}
-                </Button>
-              )
-            }
-          })}    
-        </Paper>
-      </div>
-      <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
-        <MouseEventContainer/>
-        <TravelRoute place={currentRoute} isClick={isClick} clickNum={clickNum} attractionName={attractionName} />
-      </div>
+        <div style={{position:'absolute', left:50, top:50}}>
+          <Paper style={{minWidth:200,minHeight:100,opacity: 0.5}}>
+            {sampleData.map((item, idx) => {
+              if(item != null){
+                return(
+                  <Button fullWidth onClick={()=>handleClickCourse(item)}>
+                  {item.courseName}
+                  </Button>
+                )
+              }
+            })}    
+          </Paper>
+        </div>
+        <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
+          <MouseEventContainer/>
+          <TravelRoute place={currentRoute} isClick={isClick} clickNum={clickNum} attractionName={attractionName} />
+        </div>
       </div>
     )
   }else{
