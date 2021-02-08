@@ -12,22 +12,11 @@ const TravelRouteContainer = ({place}) => {
   const [width,setWidth]= React.useState(window.innerWidth);
   const [height,setHeight]= React.useState(window.innerHeight);
 
-  const [sampleData, setSampleData] = React.useState([])//현재 코스에대한 임시저장
-  const [currentRoute, setCurrentRoute] = React.useState(null);//현재 코스
+  const [initialData, setInitialData] = React.useState([])//현재 코스에대한 임시저장
+  const [currentPoint, setCurrentPoint] = React.useState({course:0,attraction:0});//현재 코스와 관광지.
   const [backgroundImage,setBackgroundImage] = React.useState(123);//배경화면
-  const [attractionImageIdx,setAttractionImageIdx]=React.useState([//현재 코스의 attraction들 번호 임시저장
-    {attraction:null},
-    {attraction:null},
-    {attraction:null},
-    {attraction:null},
-    {attraction:null},
-    {attraction:null},
-  ]);
-  const [clickIdx,setClickIdx]=React.useState(0);//click시 배경화면관리
-  const [clickNum,setClickNum]=React.useState();//click시 배경화면관리를 위한 진짜 id
   const [isClick,setIsClick]=React.useState(false);//배경화면 클릭 유무
-  const [attractionImage,setAttractionImage]=React.useState([]) //attraction이미지
-  const [attractionName, setAttractionName]=React.useState([]) //attraction이름.
+
   /**화면 resize */
   const updateWidthAndHeight = () => {
     setWidth(window.innerWidth);
@@ -43,124 +32,109 @@ const TravelRouteContainer = ({place}) => {
     loadPlace();
   }, [])
 
-  const loadPlace = async() => {//course에대한 데이터정보.
-    const res = await getPlace(place);//여기로 지역을 정함.ex 경주
-    console.log("한번본다")
-    
-    if(res != null && res.data.code === 200){
-      //console.log(res.data.data)
-      //0: {courseId: 0, courseName: "차분히 유적지 감상이 하고 싶다면", courseImage: "https://ifh.cc/g/7ftWYB.jpg", area: "2", attraction1: "4", …}
-      //1: {courseId: 1, courseName: "테마파크와 유적지
-      setSampleData(res.data.data);//
+  const loadPlace = async() => {
+    const res = await getPlace(place);
+    if(res != null && res.data.code === 200){      
+      const data = []
+      const tempCourseList = res.data.data
+      tempCourseList.forEach(async course => {
+        const attractionData = [
+          {
+            attractionId:null,
+            attractionName : course.courseName,
+            coursefirstId : course.attraction1,
+            attractionImage : course.courseImage,
+            courseName : course.areaName
+          }
+        ]
+        const tempAttractionList = [
+          course.attraction1,
+          course.attraction2,
+          course.attraction3,
+          course.attraction4,
+          course.attraction5,
+          course.attraction6,
+        ]
+        tempAttractionList.forEach(async (item, idx) => {
+          if(item !== null){
+            const res1 = await getAttraction(item);
+            attractionData.push(res1.data.data[0])
+          }
+        })
+        data.push(attractionData)
+      })
+      console.log(data)
+      setInitialData(data)
     }
   }
 
   useEffect(() => {//course에대한 이미지 배경화면으로 지정. + 현재 코스에대한 정보 저장.
-    if(sampleData.length > 0){
-      setBackgroundImage(`url(${sampleData[0].courseImage})`)//course가 여러개 일경우 0번 코스먼저 보이게끔
-      setCurrentRoute(sampleData[0])//course가 여러개 일경우 0번 코스먼저 보이게끔
+    if(initialData.length > 0){ 
+      setBackgroundImage(`url(${initialData[0][0].attractionImage})`)//course가 여러개 일경우 0번 코스먼저 보이게끔
+      setCurrentPoint({...currentPoint,course:0})
     }
-  }, [sampleData])
+  }, [initialData])
 
-  useEffect(()=>{/**코스 선택시 */
-    loadAttractionImg();
-  },[currentRoute])
-
-  const loadAttractionImg = async() => {
-/**현재 코스의 attraction번호들을 저장 */
-    setAttractionImageIdx([//일단 초기화.
-      {attraction:null},
-      {attraction:null},
-      {attraction:null},
-      {attraction:null},
-      {attraction:null},
-      {attraction:null},
-    ]);
-    if(currentRoute!=null){
-      setAttractionImageIdx(
-        produce(attractionImageIdx, draft => {
-          draft[0].attraction=currentRoute.attraction1
-          draft[1].attraction=currentRoute.attraction2
-          draft[2].attraction=currentRoute.attraction3
-          draft[3].attraction=currentRoute.attraction4
-          draft[4].attraction=currentRoute.attraction5
-          draft[5].attraction=currentRoute.attraction6
-        }
-      ))
-    }
-  }
-  
-  useEffect(()=>{
-    if(currentRoute!=null){
-      /**새 코스가 선택되었을시 초기화(코스 이미지, 코스 이름 각각 추가) */
-      setAttractionImage([])
-      setAttractionName([])
-      setAttractionImage(array => [...array,{id:0,image:currentRoute.courseImage}])
-      setAttractionName(array => [...array,{id:0,name:currentRoute.courseName}])
-
-      attractionImageIdx.forEach((item,idx) =>{
-        if (item.attraction!=null){
-        /**attraction번호에 따른 attraction image와 attraction name 저장. */
-          loadAttraction(item,idx)
-        }
-      })
-    }
-  },[attractionImageIdx])
-
-  const loadAttraction = async(item,idx) => { 
-    const res = await getAttraction( item.attraction  );
-    if(res != null && res.data.code === 200){
-      setAttractionImage(array => [...array,{id:idx+1,image:res.data.data[0].attractionImage} ])
-      setAttractionName(array => [...array,{id:idx+1,name:res.data.data[0].attractionName} ])
-    }
-  }
-
-  useEffect(() => {
-    if(attractionImage[clickIdx]!=null){
-      setBackgroundImage(`url(${attractionImage[clickIdx].image})`)
-    }
-    
-  },[clickIdx,attractionImage]);
-
-  useEffect(() => {
-    if(clickNum!=null){
-      const index = attractionImage.findIndex(item => item.id===clickNum);//원하는 id가 바뀔경우 원하는 id를 찾아 그 인덱스를 가져오게함
-      setClickIdx(index)
-    }
-  },[clickNum]);
+  useEffect(() => {//course에대한 이미지 배경화면으로 지정. + 현재 코스에대한 정보 저장.
+    console.log(currentPoint)
+  }, [currentPoint])
 
   const handleClick=() =>{
     /**배경화면 클릭시 배경화면 순서대로 전환*/
+    const temp=initialData[currentPoint.course]
     if(isClick===false){
+      /**처음 클릭시 코스가 첫 화면이니 손수 1번 관광지로 옮겨줌. */
       setIsClick(true)
-      setClickNum(1)
+      const index = temp.findIndex(item => item.attractionId===parseInt(temp[0].coursefirstId))//4의 index
+      setBackgroundImage(`url(${temp[index].attractionImage})`)
+      setCurrentPoint({...currentPoint,attraction:index})//index는 1이 됨.. 첫번째 배열일경우.
     }
     else{
-      if(attractionImage.length===(clickNum+1)){
-        setClickNum(0)
+      //console.log(temp[parseInt(currentPoint.attraction)].attractionId)
+      //console.log(temp[0].coursefirstId)
+      //console.log(temp[parseInt(currentPoint.attraction)].attractionId-temp[0].coursefirstId)
+      if((temp.length-2)===(temp[parseInt(currentPoint.attraction)].attractionId-temp[0].coursefirstId)){
+        /**번호가 끝번호일경우 0번으로 돌려줌 */
+        console.log("왔다.")
+        setBackgroundImage(`url(${temp[0].attractionImage})`)
+        setCurrentPoint({...currentPoint,attraction:0})
+  
       }
-      else if(attractionImage.length>(clickNum+1)){
-        setClickNum(1+clickNum)
+      else if((temp.length-2)>temp[parseInt(currentPoint.attraction)].attractionId-temp[0].coursefirstId){
+        /**번호가 끝이 아닐경우 다음 관광지로 옮겨주되, 0번일경우는 코스이니, 1번 관광지로 손수 옮겨줌 */
+        if(parseInt(currentPoint.attraction)===0){
+          const index = temp.findIndex(item => item.attractionId===parseInt(temp[0].coursefirstId))
+          setBackgroundImage(`url(${temp[index].attractionImage})`)
+          setCurrentPoint({...currentPoint,attraction:index})
+        }
+        else{
+          const index = temp.findIndex(item => item.attractionId===(temp[parseInt(currentPoint.attraction)].attractionId+1))
+
+          setBackgroundImage(`url(${temp[index].attractionImage})`)
+          setCurrentPoint({...currentPoint,attraction:index})
+        }
       }
+      
     }
   }
   
   const handleClickCourse = (item) => {
-    setCurrentRoute(item)
-    setBackgroundImage(`url(${item.courseImage})`)
-    setClickNum(0)
+    const index = initialData.findIndex(init => init[0]===item[0])//4의 index
+    console.log(index)
+    setBackgroundImage(`url(${initialData[index][0].attractionImage})`)
+    setCurrentPoint({...currentPoint,course:index,attraction:0})
   }
 
-  if(sampleData.length > 0){
+  if(initialData.length > 0){
     return (
       <div style={{display:'flex'}}>
         <div style={{position:'absolute', left:50, top:50}}>
           <Paper style={{minWidth:200,minHeight:100,opacity: 0.5}}>
-            {sampleData.map((item, idx) => {
+            {initialData.map((item, idx) => {
               if(item != null){
                 return(
                   <Button fullWidth onClick={()=>handleClickCourse(item)}>
-                  {item.courseName}
+                  {item[0].attractionName}
                   </Button>
                 )
               }
@@ -169,7 +143,7 @@ const TravelRouteContainer = ({place}) => {
         </div>
         <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
           <MouseEventContainer/>
-          <TravelRoute place={currentRoute} isClick={isClick} clickNum={clickNum} attractionName={attractionName} />
+          <TravelRoute isClick={isClick}currentPoint={currentPoint} initialData={initialData}/>
         </div>
       </div>
     )

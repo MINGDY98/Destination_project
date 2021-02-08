@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Typography from '@material-ui/core/Typography';
 import Timeline from '@material-ui/lab/Timeline';
@@ -9,20 +9,8 @@ import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import { getAttraction } from '../api';
 
-const Attraction = ({ attractionId }) => {
-  const [data, setData] = React.useState(null)
-  React.useEffect(()=> {
-    loadAttraction()
-  }, [attractionId])
-
-  const loadAttraction = async() => {
-
-    const res = await getAttraction( attractionId );
-    if(res != null && res.data.code === 200){
-      setData(res.data.data[0]);
-    }
-  }
-  if(data === null){
+const Attraction = ({ item }) => {
+  if(item === null){
     return(
       <div>
         Loading...
@@ -31,47 +19,58 @@ const Attraction = ({ attractionId }) => {
   }else{  
     return(
       <div>
-        <Typography style={{color:"#ffffff"}} variant="subtitle2"><strong>{data.attractionName}</strong></Typography>
-        <Typography style={{color:"#ffffff"}} variant="subtitle2">{data.attractionDescription}</Typography>
+        <Typography style={{color:"#ffffff"}} variant="subtitle2"><strong>{item.attractionName}</strong></Typography>
+        <Typography style={{color:"#ffffff"}} variant="subtitle2">{item.attractionDescription}</Typography>
       </div>
     )
   }
 }
 
+const TravelRoute = ({ isClick,currentPoint,initialData }) => {
 
-const TravelRoute = ({ place, isClick, clickNum,attractionName }) => {
-  const [data, setData] = React.useState(null)//attraction이름.
-  const [courseName,setCourseName]=React.useState(null)//course이름
-  React.useEffect(() => {
-    
-    if(place != null){
-      console.log("place이름은")
-      console.log(place)
-      setCourseName(place.courseName)
-      setData([
-        place.attraction1,
-        place.attraction2,
-        place.attraction3,
-        place.attraction4,
-        place.attraction5,
-        place.attraction6,
-      ])
+  const [sortData, setSortData] = React.useState([
+    {attractionName:null,attractionDescription:null},
+    {attractionName:null,attractionDescription:null},
+    {attractionName:null,attractionDescription:null},
+    {attractionName:null,attractionDescription:null},
+    {attractionName:null,attractionDescription:null},
+    {attractionName:null,attractionDescription:null},])//현재 코스에대한 임시저장
+  useEffect(() => {
+
+    if(initialData.length>0){
+      //if(initialData[currentPoint.course].length>1){
+        //var value= initialData[currentPoint.course][0].coursefirstId;
+        //console.log(value)
+        //console.log(initialData[currentPoint.course].length)
+        
+       // var sum = value+initialData[currentPoint.course].length-2
+        //console.log(sum)
+        //for(var i=value;i<=sum;i++){
+  
+          //const index = initialData[currentPoint.course].findIndex(item => item.attractionId===i)
+          //console.log(i)
+          
+        //}
+        //const index = temp.findIndex(item => item.attractionId===parseInt(temp[0].coursefirstId))
+      //}
+      console.log(initialData)
+     
     }
 
-  }, [place])
+  }, [initialData,currentPoint.course])
 
-  const index = attractionName.findIndex(item => item.id===clickNum);
+
   return (
     <>
       <div style={{flexGrow:4,flexBasis:0,display:'flex',alignItems:'center'}}>
         <div style={{position:'absolute', left:50, bottom:100}}>
-          <Typography style={{color:"#ffffff"}} variant="h1">{isClick===true&&(attractionName[index]!=null) ? attractionName[index].name: courseName}</Typography>
+          <Typography style={{color:"#ffffff"}} variant="h1">{initialData.length > 0 ? initialData[currentPoint.course][currentPoint.attraction].attractionName : null }</Typography>
         </div>
       </div>
       <div style={{flexGrow:1,flexBasis:0,display:'flex',alignItems:'center',backgroundColor:'rgba(0, 0, 0, 0.5)'}}>
         <Timeline align="right">
-          {data != null && data.map((item, idx) => {
-            if(item != null){
+          {initialData != null && initialData[currentPoint.course].map((item, idx) => {
+            if(item.attractionId != null){
               return(
                 <TimelineItem>
                   <TimelineSeparator >
@@ -80,7 +79,7 @@ const TravelRoute = ({ place, isClick, clickNum,attractionName }) => {
                   </TimelineSeparator>
                   <TimelineContent style={{paddingBottom:60}}>
                     {/**attraction을 하나씩 보냄. */}
-                    <Attraction attractionId={item} />
+                    <Attraction item={item} />
                   </TimelineContent>
                 </TimelineItem>
               )
@@ -89,6 +88,7 @@ const TravelRoute = ({ place, isClick, clickNum,attractionName }) => {
           })}
         </Timeline>
       </div>
+
     </>
 
   )
