@@ -13,7 +13,7 @@ const TravelRouteContainer = ({place}) => {
   const [height,setHeight]= React.useState(window.innerHeight);
 
   const [initialData, setInitialData] = React.useState([])//현재 코스에대한 임시저장
-  const [currentPoint, setCurrentPoint] = React.useState({course:0,attraction:0});//현재 코스와 관광지.
+  const [currentPoint, setCurrentPoint] = React.useState({course:null,attraction:0});//현재 코스와 관광지.
   const [backgroundImage,setBackgroundImage] = React.useState(123);//배경화면
   const [isClick,setIsClick]=React.useState(false);//배경화면 클릭 유무
 
@@ -58,7 +58,8 @@ const TravelRouteContainer = ({place}) => {
         tempAttractionList.forEach(async (item, idx) => {
           if(item !== null){
             const res1 = await getAttraction(item);
-            attractionData.push(res1.data.data[0])
+            attractionData[idx+1]=res1.data.data[0];
+            //attractionData.push(res1.data.data[0])
           }
         })
         data.push(attractionData)
@@ -69,17 +70,17 @@ const TravelRouteContainer = ({place}) => {
   }
 
   useEffect(() => {//course에대한 이미지 배경화면으로 지정. + 현재 코스에대한 정보 저장.
-    if(initialData.length > 0){ 
+
+    if(initialData.length>0){ 
+      console.log(initialData[0][1])//undefined나옴..
       setBackgroundImage(`url(${initialData[0][0].attractionImage})`)//course가 여러개 일경우 0번 코스먼저 보이게끔
-      setCurrentPoint({...currentPoint,course:0})
+      setCurrentPoint({...currentPoint,course:0,attraction:0})
     }
   }, [initialData])
 
-  useEffect(() => {//course에대한 이미지 배경화면으로 지정. + 현재 코스에대한 정보 저장.
-    console.log(currentPoint)
-  }, [currentPoint])
-
   const handleClick=() =>{
+    console.log("핸들클릭")
+    console.log(initialData[0][3])
     /**배경화면 클릭시 배경화면 순서대로 전환*/
     const temp=initialData[currentPoint.course]
     if(isClick===false){
@@ -125,7 +126,11 @@ const TravelRouteContainer = ({place}) => {
     setCurrentPoint({...currentPoint,course:index,attraction:0})
   }
 
-  if(initialData.length > 0){
+  if((initialData.length > 0)&&(currentPoint.course!=null)){
+    //||(initialData[currentPoint.course][2]!==undefined)
+    console.log(currentPoint.course)
+    console.log(initialData)
+    console.log(initialData[0][2])
     return (
       <div style={{display:'flex'}}>
         <div style={{position:'absolute', left:50, top:50}}>

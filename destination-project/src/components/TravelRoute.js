@@ -7,7 +7,6 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-import { getAttraction } from '../api';
 
 const Attraction = ({ item }) => {
   if(item === null){
@@ -26,41 +25,9 @@ const Attraction = ({ item }) => {
   }
 }
 
-const TravelRoute = ({ isClick,currentPoint,initialData }) => {
-
-  const [sortData, setSortData] = React.useState([
-    {attractionName:null,attractionDescription:null},
-    {attractionName:null,attractionDescription:null},
-    {attractionName:null,attractionDescription:null},
-    {attractionName:null,attractionDescription:null},
-    {attractionName:null,attractionDescription:null},
-    {attractionName:null,attractionDescription:null},])//현재 코스에대한 임시저장
-  useEffect(() => {
-
-    if(initialData.length>0){
-      //if(initialData[currentPoint.course].length>1){
-        //var value= initialData[currentPoint.course][0].coursefirstId;
-        //console.log(value)
-        //console.log(initialData[currentPoint.course].length)
-        
-       // var sum = value+initialData[currentPoint.course].length-2
-        //console.log(sum)
-        //for(var i=value;i<=sum;i++){
-  
-          //const index = initialData[currentPoint.course].findIndex(item => item.attractionId===i)
-          //console.log(i)
-          
-        //}
-        //const index = temp.findIndex(item => item.attractionId===parseInt(temp[0].coursefirstId))
-      //}
-      console.log(initialData)
-     
-    }
-
-  }, [initialData,currentPoint.course])
-
-
+const TravelRoute = ({currentPoint,initialData }) => {
   return (
+
     <>
       <div style={{flexGrow:4,flexBasis:0,display:'flex',alignItems:'center'}}>
         <div style={{position:'absolute', left:50, bottom:100}}>
@@ -71,6 +38,8 @@ const TravelRoute = ({ isClick,currentPoint,initialData }) => {
         <Timeline align="right">
           {initialData != null && initialData[currentPoint.course].map((item, idx) => {
             if(item.attractionId != null){
+              console.log(initialData)
+              console.log(item)
               return(
                 <TimelineItem>
                   <TimelineSeparator >
@@ -83,6 +52,11 @@ const TravelRoute = ({ isClick,currentPoint,initialData }) => {
                   </TimelineContent>
                 </TimelineItem>
               )
+            }else{
+              console.log(item)
+              console.log(initialData)
+
+              console.log(initialData[currentPoint.course][2])
             }
            
           })}
@@ -92,5 +66,6 @@ const TravelRoute = ({ isClick,currentPoint,initialData }) => {
     </>
 
   )
+        
 }
 export default TravelRoute;
