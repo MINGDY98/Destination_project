@@ -59,7 +59,6 @@ const TravelRouteContainer = ({place}) => {
           if(item !== null){
             const res1 = await getAttraction(item);
             attractionData[idx+1]=res1.data.data[0];
-            //attractionData.push(res1.data.data[0])
           }
         })
         data.push(attractionData)
@@ -91,9 +90,7 @@ const TravelRouteContainer = ({place}) => {
       setCurrentPoint({...currentPoint,attraction:index})//index는 1이 됨.. 첫번째 배열일경우.
     }
     else{
-      //console.log(temp[parseInt(currentPoint.attraction)].attractionId)
-      //console.log(temp[0].coursefirstId)
-      //console.log(temp[parseInt(currentPoint.attraction)].attractionId-temp[0].coursefirstId)
+
       if((temp.length-2)===(temp[parseInt(currentPoint.attraction)].attractionId-temp[0].coursefirstId)){
         /**번호가 끝번호일경우 0번으로 돌려줌 */
         console.log("왔다.")
@@ -127,18 +124,15 @@ const TravelRouteContainer = ({place}) => {
   }
 
   if((initialData.length > 0)&&(currentPoint.course!=null)){
-    //||(initialData[currentPoint.course][2]!==undefined)
-    console.log(currentPoint.course)
-    console.log(initialData)
-    console.log(initialData[0][2])
+
     return (
       <div style={{display:'flex'}}>
         <div style={{position:'absolute', left:50, top:50}}>
-          <Paper style={{minWidth:200,minHeight:100,opacity: 0.5}}>
+          <Paper style={{minWidth:200,minHeight:100,opacity: 0.5,display:'flex',alignItems:'center',flexDirection: 'column',justifyContent:'center'}}>
             {initialData.map((item, idx) => {
               if(item != null){
                 return(
-                  <Button fullWidth onClick={()=>handleClickCourse(item)}>
+                  <Button fullWidth onClick={()=>handleClickCourse(item)} >
                   {item[0].attractionName}
                   </Button>
                 )
@@ -148,7 +142,7 @@ const TravelRouteContainer = ({place}) => {
         </div>
         <div onClick={handleClick} style={{display:'flex',flexDirection:'row',width:width,height:height,backgroundImage:backgroundImage,backgroundSize:'cover'}}>
           <MouseEventContainer/>
-          <TravelRoute isClick={isClick}currentPoint={currentPoint} initialData={initialData}/>
+          <TravelRoute height={height}currentPoint={currentPoint} initialData={initialData}/>
         </div>
       </div>
     )
