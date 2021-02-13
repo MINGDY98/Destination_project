@@ -44,7 +44,7 @@ const MapStyle =  styled.div`
       }
     }`;
 
-const Map =({ setClicked}) =>{
+const MapContainer =({ setClicked}) =>{
   const layerProps = {
     //onMouseEnter: ({ target }) => setHovered(target.attributes.name.value),
     //onMouseLeave: ({ target }) => setHovered('None'),
@@ -58,4 +58,4 @@ const Map =({ setClicked}) =>{
   )
 
 }
-export default Map;
+export default MapContainer;

@@ -95,4 +95,4 @@ const WaveContainer = () => {
 
   )
 }
-export default WaveContainer; 
+export default WaveContainer;

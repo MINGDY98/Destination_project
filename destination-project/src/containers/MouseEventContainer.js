@@ -22,8 +22,8 @@ function useEventListener(eventName, handler, element = document) {
 }
 
 const MouseEventContainer = () => {
-  const [width,setWidth]= React.useState(window.innerWidth);
-  const [height,setHeight]= React.useState(window.innerHeight);
+  const [width, setWidth]= React.useState(window.innerWidth);
+  const [height, setHeight]= React.useState(window.innerHeight);
 /**화면 resize */
 
   const updateWidthAndHeight = () => {
@@ -32,9 +32,6 @@ const MouseEventContainer = () => {
   };
 
   useEffect(() => {
-    //if(sampleData.length > 0){
-      //setCurrentRoute(sampleData[0])
-    //}
     window.addEventListener("resize",updateWidthAndHeight);
     return () => window.removeEventListener("resize", updateWidthAndHeight);
   },[]);
@@ -51,11 +48,13 @@ const MouseEventContainer = () => {
   const cursorInnerRef = React.useRef()
   const requestRef = React.useRef()
   const previousTimeRef = React.useRef()
+  
   const [coords, setCoords] = React.useState({ x: 0, y: 0 })
   const [isValidArea,setIsValidArea] =React.useState(false)
   const [isVisible, setIsVisible] = React.useState(true)
   const [isActive, setIsActive] = React.useState(false)
   const [isActiveClickable, setIsActiveClickable] = React.useState(false)
+
   let endX = React.useRef(0)
   let endY = React.useRef(0)
 
@@ -229,7 +228,6 @@ const MouseEventContainer = () => {
         <div ref={cursorInnerRef} style={styles.cursorInner} />
       </>
     )
-
-  
 }
+
 export default MouseEventContainer;

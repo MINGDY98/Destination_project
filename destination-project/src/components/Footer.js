@@ -1,5 +1,4 @@
 import React from 'react';
-import footer from '../../assets/images/sand.jpg'
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -27,7 +26,7 @@ const Footer = () => {
       <div className={classes.root}>
         <Container style={{paddingTop: 100, paddingBottom: 100}}>
           <Grid container>
-            <Grid xs={12} md={4}>
+            <Grid item xs={12} md={4}>
               <div>
                 <Typography style={{color:'#565656', fontSize:18}}><strong>한국여행길잡이</strong></Typography>
               </div>
@@ -36,12 +35,12 @@ const Footer = () => {
                 <Typography onClick={()=>window.open("https://github.com/MINGDY98")} style={{color:'#565656',fontWeight:600, fontSize:15, cursor:'pointer'}}>Github</Typography>
               </div>
             </Grid>
-            <Grid xs={12} md={4}>
+            <Grid item xs={12} md={4}>
               <div>
                 <Typography style={{color:'#565656', fontSize:18}}><strong>사이트맵</strong></Typography>
               </div>
             </Grid>
-            <Grid xs={12} md={4}>
+            <Grid item xs={12} md={4}>
               
             </Grid>
           </Grid>
